@@ -5,7 +5,8 @@
     "cancel": "İptal",
     "add": "Ekle",
     "back": "Geri",
-    "save": "Kaydet"
+    "save": "Kaydet",
+    "close": "Kapat"
   },
   "tabs": {
     "home": "Ev Sağlığı",
@@ -102,6 +103,14 @@
   "celebration": {
     "title": "Tertemiz!",
     "subtitle": "{{title}} yapıldı · ev sağlığı yükseldi"
+  },
+  "invite": {
+    "title": "Evine davet et",
+    "subtitle": "Bu kodu paylaş — giriş ekranındaki “Kodla katıl” ile katılırlar.",
+    "codeLabel": "Davet kodu",
+    "share": "Kodu paylaş",
+    "copied": "Kopyalandı",
+    "shareMessage": "Home Health'te “{{name}}” evimize katıl — davet kodu {{code}}."
   },
   "auth": {
     "tagline": "Evinizi birlikte tertemiz tutun.",

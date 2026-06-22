@@ -5,7 +5,8 @@
     "cancel": "Cancel",
     "add": "Add",
     "back": "Back",
-    "save": "Save"
+    "save": "Save",
+    "close": "Close"
   },
   "tabs": {
     "home": "Home Health",
@@ -102,6 +103,14 @@
   "celebration": {
     "title": "Spotless!",
     "subtitle": "{{title}} done · home health rose"
+  },
+  "invite": {
+    "title": "Invite to your home",
+    "subtitle": "Share this code — they join from the sign-in screen with “Join with a code”.",
+    "codeLabel": "Invite code",
+    "share": "Share code",
+    "copied": "Copied",
+    "shareMessage": "Join our home “{{name}}” on Home Health — use invite code {{code}}."
   },
   "auth": {
     "tagline": "Keep your home spotless, together.",

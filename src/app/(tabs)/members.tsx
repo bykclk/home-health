@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { InviteModal } from '@/components/InviteModal';
 import { MemberRow } from '@/components/MemberRow';
 import { setAppLanguage, SUPPORTED_LANGUAGES } from '@/lib/i18n';
 import { useHousehold, useMembers, useTasks } from '@/lib/data';
@@ -15,6 +17,7 @@ export default function MembersScreen() {
   const household = useHousehold();
   const members = useMembers();
   const tasks = useTasks();
+  const [inviteVisible, setInviteVisible] = useState(false);
 
   // Attribute recent completions to a task's primary assignee.
   const since = Date.now() - WEEK_MS;
@@ -59,9 +62,18 @@ export default function MembersScreen() {
         />
       ))}
 
-      <Pressable style={styles.invite}>
+      <Pressable
+        style={styles.invite}
+        onPress={() => setInviteVisible(true)}
+        disabled={!household.inviteCode}>
         <Text style={styles.inviteText}>{t('members.invite')}</Text>
       </Pressable>
+
+      <InviteModal
+        visible={inviteVisible}
+        household={household}
+        onClose={() => setInviteVisible(false)}
+      />
     </ScrollView>
   );
 }
