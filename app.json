@@ -40,7 +40,7 @@
       ],
       "expo-localization",
       "expo-apple-authentication",
-      "@react-native-google-signin/google-signin",
+      ["@react-native-google-signin/google-signin", { "iosUrlScheme": "com.googleusercontent.apps.867735633533-299rmc2lgl2u9o62b2a8aieq1mqg367e" }],
       "./plugins/withModularHeaders"
     ],
     "experiments": {
