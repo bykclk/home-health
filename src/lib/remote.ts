@@ -229,14 +229,27 @@ export async function deleteRoom(id: string) {
 
 // --- Onboarding ----------------------------------------------------------
 
+/** Map a `households` RPC row into the cache and prime related queries. */
+function adoptHousehold(data: any) {
+  const row = Array.isArray(data) ? data[0] : data;
+  if (!row?.id) return;
+  const household: Household = { id: row.id, name: row.name, inviteCode: row.invite_code };
+  // Write straight into the cache so the routing gate redirects immediately,
+  // without waiting on a refetch round-trip.
+  queryClient.setQueryData(['household'], household);
+  queryClient.invalidateQueries({ queryKey: ['members'] });
+  queryClient.invalidateQueries({ queryKey: ['rooms'] });
+  queryClient.invalidateQueries({ queryKey: ['tasks'] });
+}
+
 export async function createHousehold(name: string): Promise<void> {
-  const { error } = await supabase.rpc('create_household', { p_name: name.trim() });
+  const { data, error } = await supabase.rpc('create_household', { p_name: name.trim() });
   if (error) throw error;
-  await queryClient.invalidateQueries({ queryKey: ['household'] });
+  adoptHousehold(data);
 }
 
 export async function joinHousehold(code: string): Promise<void> {
-  const { error } = await supabase.rpc('join_household', { p_code: code.trim() });
+  const { data, error } = await supabase.rpc('join_household', { p_code: code.trim() });
   if (error) throw error;
-  await queryClient.invalidateQueries({ queryKey: ['household'] });
+  adoptHousehold(data);
 }
