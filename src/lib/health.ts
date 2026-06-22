@@ -70,7 +70,10 @@ export function taskState(task: Task, now: number = Date.now()): TaskState {
   const fillColor = colorFor(level);
   const fillWash = withAlpha(fillColor, 0.14);
   const fillPct = `${Math.round(Math.max(0, Math.min(1, progress)) * 100)}%`;
-  const done = progress < 0.05;
+  // "Done for the current cycle": completed at least once and not yet due again.
+  // A never-completed task is NOT done (its baseline is createdAt), so the
+  // detail screen offers "Mark done" rather than a no-op "Undo".
+  const done = task.completions.length > 0 && progress < 1;
 
   let dueShort: string;
   let fillLabelKey: string;
