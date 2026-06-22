@@ -1,0 +1,122 @@
+{
+  "common": {
+    "edit": "Düzenle",
+    "delete": "Sil",
+    "cancel": "İptal",
+    "add": "Ekle",
+    "back": "Geri",
+    "save": "Kaydet"
+  },
+  "tabs": {
+    "home": "Ev Sağlığı",
+    "rooms": "Odalar",
+    "stats": "İstatistik",
+    "house": "Ev"
+  },
+  "home": {
+    "scoreLabel": "Ev Sağlığı",
+    "streak": "{{count}} günlük seri",
+    "captionGreat": "Eviniz pırıl pırıl",
+    "captionGood": "İyi gidiyor — böyle devam",
+    "captionOk": "Birkaç şey ilgi bekliyor",
+    "captionLow": "Toparlanma zamanı"
+  },
+  "room": {
+    "clean": "{{pct}} temiz"
+  },
+  "rooms": {
+    "title": "Odalar",
+    "taskCount_one": "{{count}} görev",
+    "taskCount_other": "{{count}} görev",
+    "cleanLabel": "temiz",
+    "empty": "Henüz görev yok — ekleyerek başla.",
+    "addTask": "+ Görev ekle",
+    "manage": "Yönet",
+    "done": "Bitti",
+    "newRoom": "+ Yeni oda ekle"
+  },
+  "stats": {
+    "title": "İstatistik",
+    "homeHealth": "ev sağlığı",
+    "streakLabel": "günlük seri",
+    "total": "toplam",
+    "last7": "Son 7 gün",
+    "roomCleanliness": "Oda temizliği"
+  },
+  "members": {
+    "subtitle_one": "{{count}} üye · paylaşımlı görevler",
+    "subtitle_other": "{{count}} üye · paylaşımlı görevler",
+    "thisWeek": "bu hafta",
+    "invite": "+ Üye davet et",
+    "roleOwner": "Yönetici",
+    "roleMember": "Üye",
+    "language": "Dil"
+  },
+  "detail": {
+    "repeat": "Tekrar",
+    "status": "Durum",
+    "assignee": "Sorumlu",
+    "history": "Geçmiş",
+    "doneOn": "{{when}} yapıldı",
+    "complete": "Temizle · Tamamlandı işaretle",
+    "undo": "Yapıldı ✓ · Geri al",
+    "countText_one": "{{count}} kez",
+    "countText_other": "{{count}} kez"
+  },
+  "repeat": {
+    "everyNDays_one": "Her gün",
+    "everyNDays_other": "{{count}} günde bir",
+    "weekly": "Her {{day}}"
+  },
+  "task": {
+    "add": "Görev ekle",
+    "daysLeftShort": "gün",
+    "today": "bugün",
+    "overdue": "gecikti",
+    "status": {
+      "clean": "Temiz",
+      "soon": "Yakında",
+      "overdue": "Gecikti"
+    }
+  },
+  "add": {
+    "titleNew": "Yeni görev",
+    "titleEdit": "Görevi düzenle",
+    "namePlaceholder": "Görev adı (örn. Halıyı süpür)",
+    "room": "ODA",
+    "repeat": "TEKRAR",
+    "modeInterval": "Aralık (gün)",
+    "modeFixed": "Sabit gün",
+    "intervalHint": "Son yapıldığından bu kadar gün sonra kirlensin",
+    "intervalUnit": "günde bir",
+    "weeklyHint": "Her hafta bu gün",
+    "assignee": "KİM SORUMLU?",
+    "save": "Görev ekle",
+    "saveEdit": "Değişiklikleri kaydet"
+  },
+  "newRoom": {
+    "title": "Yeni Oda",
+    "subtitle": "Görevlerini gruplayacağın bir alan ekle.",
+    "placeholder": "örn. Balkon"
+  },
+  "celebration": {
+    "title": "Tertemiz!",
+    "subtitle": "{{title}} yapıldı · ev sağlığı yükseldi"
+  },
+  "auth": {
+    "tagline": "Evinizi birlikte tertemiz tutun.",
+    "continueApple": "Apple ile devam et",
+    "continueGoogle": "Google ile devam et"
+  },
+  "onboarding": {
+    "title": "Eviniz",
+    "createTitle": "Bir ev oluştur",
+    "createSubtitle": "Sıfırdan başla, sonra başkalarını davet et.",
+    "namePlaceholder": "Ev adı",
+    "create": "Ev oluştur",
+    "joinTitle": "Kodla katıl",
+    "joinSubtitle": "Bir üyenin paylaştığı davet kodunu gir.",
+    "codePlaceholder": "Davet kodu",
+    "join": "Eve katıl"
+  }
+}

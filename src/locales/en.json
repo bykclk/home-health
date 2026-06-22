@@ -1,0 +1,122 @@
+{
+  "common": {
+    "edit": "Edit",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "add": "Add",
+    "back": "Back",
+    "save": "Save"
+  },
+  "tabs": {
+    "home": "Home Health",
+    "rooms": "Rooms",
+    "stats": "Stats",
+    "house": "House"
+  },
+  "home": {
+    "scoreLabel": "Home Health",
+    "streak": "{{count}}-day streak",
+    "captionGreat": "Your home is sparkling",
+    "captionGood": "Looking good — keep it up",
+    "captionOk": "A few things need attention",
+    "captionLow": "Time for a clean-up"
+  },
+  "room": {
+    "clean": "{{pct}} clean"
+  },
+  "rooms": {
+    "title": "Rooms",
+    "taskCount_one": "{{count}} task",
+    "taskCount_other": "{{count}} tasks",
+    "cleanLabel": "clean",
+    "empty": "No tasks yet — add one to start.",
+    "addTask": "+ Add task",
+    "manage": "Manage",
+    "done": "Done",
+    "newRoom": "+ New room"
+  },
+  "stats": {
+    "title": "Stats",
+    "homeHealth": "home health",
+    "streakLabel": "day streak",
+    "total": "total",
+    "last7": "Last 7 days",
+    "roomCleanliness": "Room cleanliness"
+  },
+  "members": {
+    "subtitle_one": "{{count}} member · shared tasks",
+    "subtitle_other": "{{count}} members · shared tasks",
+    "thisWeek": "this week",
+    "invite": "+ Invite member",
+    "roleOwner": "Owner",
+    "roleMember": "Member",
+    "language": "Language"
+  },
+  "detail": {
+    "repeat": "Repeat",
+    "status": "Status",
+    "assignee": "Assignee",
+    "history": "History",
+    "doneOn": "Done {{when}}",
+    "complete": "Clean · Mark done",
+    "undo": "Done ✓ · Undo",
+    "countText_one": "{{count}}× done",
+    "countText_other": "{{count}}× done"
+  },
+  "repeat": {
+    "everyNDays_one": "Every day",
+    "everyNDays_other": "Every {{count}} days",
+    "weekly": "Every {{day}}"
+  },
+  "task": {
+    "add": "Add task",
+    "daysLeftShort": "days",
+    "today": "today",
+    "overdue": "overdue",
+    "status": {
+      "clean": "Clean",
+      "soon": "Due soon",
+      "overdue": "Overdue"
+    }
+  },
+  "add": {
+    "titleNew": "New task",
+    "titleEdit": "Edit task",
+    "namePlaceholder": "Task name (e.g. Vacuum the rug)",
+    "room": "ROOM",
+    "repeat": "REPEAT",
+    "modeInterval": "Interval (days)",
+    "modeFixed": "Fixed day",
+    "intervalHint": "Gets dirty this many days after it was last done",
+    "intervalUnit": "days apart",
+    "weeklyHint": "Every week on this day",
+    "assignee": "WHO'S RESPONSIBLE?",
+    "save": "Add task",
+    "saveEdit": "Save changes"
+  },
+  "newRoom": {
+    "title": "New Room",
+    "subtitle": "Add a space to group your tasks.",
+    "placeholder": "e.g. Balcony"
+  },
+  "celebration": {
+    "title": "Spotless!",
+    "subtitle": "{{title}} done · home health rose"
+  },
+  "auth": {
+    "tagline": "Keep your home spotless, together.",
+    "continueApple": "Continue with Apple",
+    "continueGoogle": "Continue with Google"
+  },
+  "onboarding": {
+    "title": "Your household",
+    "createTitle": "Create a household",
+    "createSubtitle": "Start fresh and invite others later.",
+    "namePlaceholder": "Household name",
+    "create": "Create household",
+    "joinTitle": "Join with a code",
+    "joinSubtitle": "Enter the invite code a member shared with you.",
+    "codePlaceholder": "Invite code",
+    "join": "Join household"
+  }
+}
