@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { InviteModal } from '@/components/InviteModal';
 import { MemberRow } from '@/components/MemberRow';
+import { useAuth } from '@/lib/auth';
 import { setAppLanguage, SUPPORTED_LANGUAGES } from '@/lib/i18n';
 import { useHousehold, useMembers, useTasks } from '@/lib/data';
 import { colors, fonts, radii } from '@/theme';
@@ -17,7 +18,14 @@ export default function MembersScreen() {
   const household = useHousehold();
   const members = useMembers();
   const tasks = useTasks();
+  const { signOut } = useAuth();
   const [inviteVisible, setInviteVisible] = useState(false);
+
+  const confirmSignOut = () =>
+    Alert.alert(t('members.signOutConfirm'), undefined, [
+      { text: t('common.cancel'), style: 'cancel' },
+      { text: t('members.signOut'), style: 'destructive', onPress: () => signOut() },
+    ]);
 
   // Attribute recent completions to a task's primary assignee.
   const since = Date.now() - WEEK_MS;
@@ -69,6 +77,10 @@ export default function MembersScreen() {
         <Text style={styles.inviteText}>{t('members.invite')}</Text>
       </Pressable>
 
+      <Pressable style={styles.signOut} onPress={confirmSignOut}>
+        <Text style={styles.signOutText}>{t('members.signOut')}</Text>
+      </Pressable>
+
       <InviteModal
         visible={inviteVisible}
         household={household}
@@ -99,4 +111,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   inviteText: { fontSize: 15, fontFamily: fonts.bold, color: colors.accentDark },
+
+  signOut: { marginTop: 18, paddingVertical: 12, alignItems: 'center' },
+  signOutText: { fontSize: 15, fontFamily: fonts.bold, color: colors.danger },
 });

@@ -51,7 +51,9 @@
     "invite": "+ Üye davet et",
     "roleOwner": "Yönetici",
     "roleMember": "Üye",
-    "language": "Dil"
+    "language": "Dil",
+    "signOut": "Çıkış yap",
+    "signOutConfirm": "Home Health'ten çıkış yapılsın mı?"
   },
   "detail": {
     "repeat": "Tekrar",

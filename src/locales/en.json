@@ -51,7 +51,9 @@
     "invite": "+ Invite member",
     "roleOwner": "Owner",
     "roleMember": "Member",
-    "language": "Language"
+    "language": "Language",
+    "signOut": "Sign out",
+    "signOutConfirm": "Sign out of Home Health?"
   },
   "detail": {
     "repeat": "Repeat",
