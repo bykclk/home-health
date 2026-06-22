@@ -56,7 +56,9 @@ async function fetchMembers(householdId: string): Promise<Member[]> {
       id: m.user_id,
       name: p?.display_name || '—',
       initial: p?.initial || '?',
-      color: m.color || p?.color || '#4a754c',
+      // Profile color is the source of truth (what the profile editor sets);
+      // fall back to the per-household color, then the default.
+      color: p?.color || m.color || '#4a754c',
       roleKey: m.role === 'owner' ? 'members.roleOwner' : 'members.roleMember',
     };
   });
