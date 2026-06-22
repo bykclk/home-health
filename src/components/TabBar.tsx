@@ -3,6 +3,7 @@ import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Svg, { Path, Rect } from 'react-native-svg';
 
 import { colors, fonts, radii, shadow } from '@/theme';
 
@@ -27,11 +28,42 @@ interface TabBarProps {
   };
 }
 
-/** Simple bordered geometric glyphs, matching the source design. */
+/** Outline icons per tab: health (heart), rooms (grid), stats (bars), house. */
 function TabIcon({ name, color }: { name: string; color: string }) {
-  const radius =
-    name === 'rooms' ? 999 : name === 'index' ? 6 : name === 'members' ? 5 : 4;
-  return <View style={[styles.icon, { borderColor: color, borderRadius: radius }]} />;
+  const stroke = {
+    stroke: color,
+    strokeWidth: 1.9,
+    fill: 'none' as const,
+    strokeLinecap: 'round' as const,
+    strokeLinejoin: 'round' as const,
+  };
+  return (
+    <Svg width={23} height={23} viewBox="0 0 24 24">
+      {name === 'index' && (
+        <Path
+          {...stroke}
+          d="M12 21.3l-1.45-1.32C5.4 15.3 2 12.24 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.74-3.4 6.8-8.55 11.48L12 21.3z"
+        />
+      )}
+      {name === 'rooms' && (
+        <>
+          <Rect {...stroke} x={3.5} y={3.5} width={7} height={7} rx={1.8} />
+          <Rect {...stroke} x={13.5} y={3.5} width={7} height={7} rx={1.8} />
+          <Rect {...stroke} x={3.5} y={13.5} width={7} height={7} rx={1.8} />
+          <Rect {...stroke} x={13.5} y={13.5} width={7} height={7} rx={1.8} />
+        </>
+      )}
+      {name === 'stats' && (
+        <>
+          <Path {...stroke} strokeWidth={1.5} d="M4 20.2h16" />
+          <Path {...stroke} strokeWidth={2.4} d="M7.5 20v-6.5M12 20V9M16.5 20V5.5" />
+        </>
+      )}
+      {name === 'members' && (
+        <Path {...stroke} d="M3.5 11.5 12 4.5l8.5 7M5.6 9.9V20h12.8V9.9M9.7 20v-5.2h4.6V20" />
+      )}
+    </Svg>
+  );
 }
 
 export function TabBar({ state, navigation }: TabBarProps) {
@@ -88,7 +120,6 @@ const styles = StyleSheet.create({
     paddingTop: 12,
   },
   tab: { alignItems: 'center', gap: 5, width: 64 },
-  icon: { width: 18, height: 18, borderWidth: 2 },
   label: { fontSize: 10, fontFamily: fonts.bold },
   addButton: { marginTop: -6 },
   addCircle: {
