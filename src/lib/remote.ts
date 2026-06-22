@@ -29,18 +29,37 @@ export async function fetchActiveHousehold(): Promise<Household | null> {
 }
 
 async function fetchMembers(householdId: string): Promise<Member[]> {
-  const { data, error } = await supabase
+  // Two queries instead of a PostgREST embed: household_members.user_id and
+  // profiles.id both reference auth.users, with no direct FK between them, so
+  // `profiles(...)` can't be embedded. Fetch both and join in JS.
+  const { data: rows, error } = await supabase
     .from('household_members')
-    .select('user_id, role, color, profiles(display_name, initial, color)')
-    .eq('household_id', householdId);
+    .select('user_id, role, color')
+    .eq('household_id', householdId)
+    .order('joined_at', { ascending: true });
   if (error) throw error;
-  return (data ?? []).map((row: any) => ({
-    id: row.user_id,
-    name: row.profiles?.display_name || '—',
-    initial: row.profiles?.initial || '?',
-    color: row.color || row.profiles?.color || '#4a754c',
-    roleKey: row.role === 'owner' ? 'members.roleOwner' : 'members.roleMember',
-  }));
+  const members = rows ?? [];
+
+  const ids = members.map((m) => m.user_id);
+  const profiles: Record<string, any> = {};
+  if (ids.length) {
+    const { data: profs } = await supabase
+      .from('profiles')
+      .select('id, display_name, initial, color')
+      .in('id', ids);
+    for (const p of profs ?? []) profiles[p.id] = p;
+  }
+
+  return members.map((m: any) => {
+    const p = profiles[m.user_id];
+    return {
+      id: m.user_id,
+      name: p?.display_name || '—',
+      initial: p?.initial || '?',
+      color: m.color || p?.color || '#4a754c',
+      roleKey: m.role === 'owner' ? 'members.roleOwner' : 'members.roleMember',
+    };
+  });
 }
 
 async function fetchRooms(householdId: string): Promise<Room[]> {
