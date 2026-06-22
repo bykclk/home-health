@@ -53,7 +53,14 @@
     "roleMember": "Üye",
     "language": "Dil",
     "signOut": "Çıkış yap",
-    "signOutConfirm": "Home Health'ten çıkış yapılsın mı?"
+    "signOutConfirm": "Home Health'ten çıkış yapılsın mı?",
+    "editProfile": "Profili düzenle"
+  },
+  "profile": {
+    "title": "Profili düzenle",
+    "name": "Görünen ad",
+    "namePlaceholder": "Adın",
+    "color": "Avatar rengi"
   },
   "detail": {
     "repeat": "Tekrar",

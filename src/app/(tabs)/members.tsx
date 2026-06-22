@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -14,6 +15,7 @@ const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 
 export default function MembersScreen() {
   const { t, i18n } = useTranslation();
+  const router = useRouter();
   const insets = useSafeAreaInsets();
   const household = useHousehold();
   const members = useMembers();
@@ -77,6 +79,10 @@ export default function MembersScreen() {
         <Text style={styles.inviteText}>{t('members.invite')}</Text>
       </Pressable>
 
+      <Pressable style={styles.editProfile} onPress={() => router.push('/profile')}>
+        <Text style={styles.editProfileText}>{t('members.editProfile')}</Text>
+      </Pressable>
+
       <Pressable style={styles.signOut} onPress={confirmSignOut}>
         <Text style={styles.signOutText}>{t('members.signOut')}</Text>
       </Pressable>
@@ -112,6 +118,16 @@ const styles = StyleSheet.create({
   },
   inviteText: { fontSize: 15, fontFamily: fonts.bold, color: colors.accentDark },
 
-  signOut: { marginTop: 18, paddingVertical: 12, alignItems: 'center' },
+  editProfile: {
+    marginTop: 20,
+    paddingVertical: 14,
+    borderRadius: radii.md,
+    borderWidth: 1.5,
+    borderColor: colors.line5,
+    alignItems: 'center',
+  },
+  editProfileText: { fontSize: 15, fontFamily: fonts.bold, color: colors.text },
+
+  signOut: { marginTop: 6, paddingVertical: 12, alignItems: 'center' },
   signOutText: { fontSize: 15, fontFamily: fonts.bold, color: colors.danger },
 });

@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { queryClient } from '@/lib/queryClient';
 import { supabase } from '@/lib/supabase';
-import type { Household, Member, Room, Task } from '@/types';
+import type { Household, Member, Profile, Room, Task } from '@/types';
 import type { TaskInput } from '@/lib/store';
 
 const EMPTY_HOUSEHOLD: Household = { id: '', name: '', inviteCode: '' };
@@ -271,4 +271,35 @@ export async function joinHousehold(code: string): Promise<void> {
   const { data, error } = await supabase.rpc('join_household', { p_code: code.trim() });
   if (error) throw error;
   adoptHousehold(data);
+}
+
+// --- Profile -------------------------------------------------------------
+
+export async function getMyProfile(): Promise<Profile | null> {
+  const { data: auth } = await supabase.auth.getUser();
+  const uid = auth.user?.id;
+  if (!uid) return null;
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('id, display_name, initial, color')
+    .eq('id', uid)
+    .maybeSingle();
+  if (error) throw error;
+  return data
+    ? { id: data.id, displayName: data.display_name, initial: data.initial, color: data.color }
+    : null;
+}
+
+export async function updateProfile(input: { displayName: string; color: string }): Promise<void> {
+  const { data: auth } = await supabase.auth.getUser();
+  const uid = auth.user?.id;
+  if (!uid) return;
+  const name = input.displayName.trim();
+  const initial = (name[0] || 'H').toUpperCase();
+  const { error } = await supabase
+    .from('profiles')
+    .update({ display_name: name, initial, color: input.color })
+    .eq('id', uid);
+  if (error) throw error;
+  queryClient.invalidateQueries({ queryKey: ['members'] });
 }

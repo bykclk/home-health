@@ -1,10 +1,11 @@
+import { avatarColors } from '@/theme';
 import type { Household, Member, Room, Task } from '@/types';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 const now = Date.now();
 const daysAgo = (n: number) => new Date(now - n * DAY_MS).toISOString();
 
-export const MEMBER_COLORS = ['#4a754c', '#3b6ea5', '#9a5ba6', '#c2792e'];
+export const MEMBER_COLORS = avatarColors;
 
 export const household: Household = {
   id: 'hh_1',

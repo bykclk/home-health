@@ -7,7 +7,7 @@
 import { useSyncExternalStore } from 'react';
 
 import { household, members, rooms as seedRooms, tasks as seedTasks } from '@/lib/mock';
-import type { Household, Member, Room, Task } from '@/types';
+import type { Household, Member, Profile, Room, Task } from '@/types';
 
 interface State {
   household: Household;
@@ -129,3 +129,20 @@ export function deleteRoom(id: string) {
 // reference the same surface for both backends.
 export async function createHousehold(_name: string): Promise<void> {}
 export async function joinHousehold(_code: string): Promise<void> {}
+
+// In mock mode the first seed member stands in for the current user.
+export async function getMyProfile(): Promise<Profile | null> {
+  const me = state.members[0];
+  return me ? { id: me.id, displayName: me.name, initial: me.initial, color: me.color } : null;
+}
+
+export async function updateProfile(input: { displayName: string; color: string }): Promise<void> {
+  const me = state.members[0];
+  if (!me) return;
+  const name = input.displayName.trim();
+  const initial = (name[0] || 'H').toUpperCase();
+  state.members = state.members.map((m) =>
+    m.id === me.id ? { ...m, name, initial, color: input.color } : m
+  );
+  emit();
+}

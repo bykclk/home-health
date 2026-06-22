@@ -30,4 +30,8 @@ export const deleteRoom = impl.deleteRoom;
 export const createHousehold = impl.createHousehold;
 export const joinHousehold = impl.joinHousehold;
 
+// Profile
+export const getMyProfile = impl.getMyProfile;
+export const updateProfile = impl.updateProfile;
+
 export type { TaskInput } from '@/lib/store';

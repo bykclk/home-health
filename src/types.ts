@@ -37,6 +37,13 @@ export interface Household {
   inviteCode: string;
 }
 
+export interface Profile {
+  id: string;
+  displayName: string;
+  initial: string;
+  color: string;
+}
+
 export type TaskLevel = 'clean' | 'soon' | 'overdue';
 
 export interface TaskState {

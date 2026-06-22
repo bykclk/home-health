@@ -47,6 +47,9 @@ export const colors = {
   overdue: '#af5331',
 } as const;
 
+/** Preset avatar/member colors (used for profiles and the color picker). */
+export const avatarColors = ['#4a754c', '#3b6ea5', '#9a5ba6', '#c2792e', '#b3812f', '#5f6b8c'];
+
 export const spacing = {
   xs: 4,
   sm: 8,

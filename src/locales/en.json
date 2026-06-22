@@ -53,7 +53,14 @@
     "roleMember": "Member",
     "language": "Language",
     "signOut": "Sign out",
-    "signOutConfirm": "Sign out of Home Health?"
+    "signOutConfirm": "Sign out of Home Health?",
+    "editProfile": "Edit profile"
+  },
+  "profile": {
+    "title": "Edit profile",
+    "name": "Display name",
+    "namePlaceholder": "Your name",
+    "color": "Avatar color"
   },
   "detail": {
     "repeat": "Repeat",
