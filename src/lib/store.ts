@@ -124,3 +124,8 @@ export function deleteRoom(id: string) {
   state.tasks = state.tasks.filter((t) => t.roomId !== id);
   emit();
 }
+
+// Onboarding is bypassed in mock mode; these exist only so lib/data.ts can
+// reference the same surface for both backends.
+export async function createHousehold(_name: string): Promise<void> {}
+export async function joinHousehold(_code: string): Promise<void> {}

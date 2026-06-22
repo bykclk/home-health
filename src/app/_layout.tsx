@@ -6,7 +6,8 @@ import {
   useFonts,
 } from '@expo-google-fonts/hanken-grotesk';
 import { Newsreader_500Medium } from '@expo-google-fonts/newsreader';
-import { Stack } from 'expo-router';
+import { QueryClientProvider, useQuery } from '@tanstack/react-query';
+import { Stack, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
@@ -14,7 +15,12 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { Celebration } from '@/components/Celebration';
+import { AuthProvider, useAuth } from '@/lib/auth';
+import { USE_MOCK } from '@/lib/config';
 import { loadStoredLanguage } from '@/lib/i18n';
+import { queryClient } from '@/lib/queryClient';
+import { useRealtimeSync } from '@/lib/realtime';
+import { fetchActiveHousehold } from '@/lib/remote';
 import { colors } from '@/theme';
 
 SplashScreen.preventAutoHideAsync();
@@ -41,14 +47,56 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
-        <StatusBar style="dark" />
-        <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.bg } }}>
-          <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="task/[id]" options={{ presentation: 'modal' }} />
-          <Stack.Screen name="task/new" options={{ presentation: 'modal' }} />
-        </Stack>
-        <Celebration />
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
+            <StatusBar style="dark" />
+            <RootNavigator />
+            <Celebration />
+          </AuthProvider>
+        </QueryClientProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
+  );
+}
+
+function RootNavigator() {
+  const { session, loading } = useAuth();
+  const router = useRouter();
+  const segments = useSegments();
+
+  const householdQuery = useQuery({
+    queryKey: ['household'],
+    queryFn: fetchActiveHousehold,
+    enabled: !USE_MOCK && !!session,
+  });
+
+  useRealtimeSync(USE_MOCK ? undefined : householdQuery.data?.id);
+
+  useEffect(() => {
+    if (USE_MOCK || loading) return;
+    const root = segments[0];
+    const inAuth = root === '(auth)';
+    const inOnboarding = root === '(onboarding)';
+
+    if (!session) {
+      if (!inAuth) router.replace('/(auth)/sign-in');
+      return;
+    }
+    if (householdQuery.isLoading) return;
+    if (!householdQuery.data) {
+      if (!inOnboarding) router.replace('/(onboarding)/household');
+      return;
+    }
+    if (inAuth || inOnboarding) router.replace('/(tabs)');
+  }, [session, loading, householdQuery.isLoading, householdQuery.data, segments, router]);
+
+  return (
+    <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.bg } }}>
+      <Stack.Screen name="(auth)" />
+      <Stack.Screen name="(onboarding)" />
+      <Stack.Screen name="(tabs)" />
+      <Stack.Screen name="task/[id]" options={{ presentation: 'modal' }} />
+      <Stack.Screen name="task/new" options={{ presentation: 'modal' }} />
+    </Stack>
   );
 }

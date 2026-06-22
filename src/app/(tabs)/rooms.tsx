@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { NewRoomModal } from '@/components/NewRoomModal';
 import { RoomCard } from '@/components/RoomCard';
-import { addRoom, deleteTask, useRooms, useTasks } from '@/lib/store';
+import { addRoom, deleteTask, useRooms, useTasks } from '@/lib/data';
 import { colors, fonts, radii } from '@/theme';
 import type { Room, Task } from '@/types';
 

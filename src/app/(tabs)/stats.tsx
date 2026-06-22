@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ProgressBar } from '@/components/ProgressBar';
 import { WeekBars } from '@/components/WeekBars';
 import { homeHealth, last7Days, roomScore, scoreColor, streak, total } from '@/lib/health';
-import { useRooms, useTasks } from '@/lib/store';
+import { useRooms, useTasks } from '@/lib/data';
 import { colors, fonts, radii, shadow } from '@/theme';
 
 export default function StatsScreen() {

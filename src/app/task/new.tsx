@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Avatar } from '@/components/Avatar';
 import { RepeatPicker } from '@/components/RepeatPicker';
-import { addTask, updateTask, useMembers, useRooms, useTask } from '@/lib/store';
+import { addTask, updateTask, useMembers, useRooms, useTask } from '@/lib/data';
 import { colors, fonts, radii, withAlpha } from '@/theme';
 import type { RepeatMode } from '@/types';
 

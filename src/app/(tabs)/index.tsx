@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ScoreRing } from '@/components/ScoreRing';
 import { TaskCircle } from '@/components/TaskCircle';
 import { homeHealth, roomScore, streak, taskState } from '@/lib/health';
-import { useRooms, useTasks } from '@/lib/store';
+import { useRooms, useTasks } from '@/lib/data';
 import { colors, fonts, radii } from '@/theme';
 
 function caption(score: number): string {

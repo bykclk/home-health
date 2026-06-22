@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { MemberRow } from '@/components/MemberRow';
 import { setAppLanguage, SUPPORTED_LANGUAGES } from '@/lib/i18n';
-import { useHousehold, useMembers, useTasks } from '@/lib/store';
+import { useHousehold, useMembers, useTasks } from '@/lib/data';
 import { colors, fonts, radii } from '@/theme';
 
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;

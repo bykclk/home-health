@@ -10,7 +10,7 @@ import { TaskCircle } from '@/components/TaskCircle';
 import { celebrate } from '@/lib/celebration';
 import { relativeWhen, repeatLabel } from '@/lib/format';
 import { streak, taskState } from '@/lib/health';
-import { completeTask, deleteTask, uncompleteTask, useMembers, useRooms, useTask, useTasks } from '@/lib/store';
+import { completeTask, deleteTask, uncompleteTask, useMembers, useRooms, useTask, useTasks } from '@/lib/data';
 import { colors, fonts, radii } from '@/theme';
 
 export default function TaskDetailScreen() {
