@@ -78,6 +78,12 @@
     "everyNDays_other": "Every {{count}} days",
     "weekly": "Every {{day}}"
   },
+  "time": {
+    "today": "today",
+    "yesterday": "yesterday",
+    "daysAgo_one": "{{count}} day ago",
+    "daysAgo_other": "{{count}} days ago"
+  },
   "task": {
     "add": "Add task",
     "daysLeftShort": "days",

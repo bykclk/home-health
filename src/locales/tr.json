@@ -78,6 +78,12 @@
     "everyNDays_other": "{{count}} günde bir",
     "weekly": "Her {{day}}"
   },
+  "time": {
+    "today": "bugün",
+    "yesterday": "dün",
+    "daysAgo_one": "{{count}} gün önce",
+    "daysAgo_other": "{{count}} gün önce"
+  },
   "task": {
     "add": "Görev ekle",
     "daysLeftShort": "gün",

@@ -98,7 +98,7 @@ export default function TaskDetailScreen() {
                   <Path d="M3 7.5L6 10.5L11 4" stroke="#fff" strokeWidth={2.4} fill="none" strokeLinecap="round" strokeLinejoin="round" />
                 </Svg>
               </View>
-              <Text style={styles.historyWhen}>{t('detail.doneOn', { when: relativeWhen(c, i18n.language) })}</Text>
+              <Text style={styles.historyWhen}>{t('detail.doneOn', { when: relativeWhen(c, t) })}</Text>
             </View>
           ))}
         </View>

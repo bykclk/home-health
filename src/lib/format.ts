@@ -29,13 +29,14 @@ export function repeatLabel(task: Task, t: TFunction, lang: string): string {
   return t('repeat.everyNDays', { count: task.intervalDays ?? 7 });
 }
 
-/** Localized relative time like "today" / "2 days ago". */
-export function relativeWhen(iso: string, lang: string): string {
-  const then = new Date(iso);
-  const a = new Date(then.getFullYear(), then.getMonth(), then.getDate()).getTime();
-  const now = new Date();
-  const b = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
-  const days = Math.round((a - b) / (24 * 60 * 60 * 1000));
-  const rtf = new Intl.RelativeTimeFormat(lang, { numeric: 'auto' });
-  return rtf.format(days, 'day');
+/**
+ * Localized relative time like "today" / "2 days ago". Avoids
+ * Intl.RelativeTimeFormat, which Hermes does not implement.
+ */
+export function relativeWhen(iso: string, t: TFunction): string {
+  const dayStart = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+  const days = Math.round((dayStart(new Date()) - dayStart(new Date(iso))) / (24 * 60 * 60 * 1000));
+  if (days <= 0) return t('time.today');
+  if (days === 1) return t('time.yesterday');
+  return t('time.daysAgo', { count: days });
 }
