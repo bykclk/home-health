@@ -8,6 +8,7 @@ import { useSyncExternalStore } from 'react';
 
 import { initialBaselineISO } from '@/lib/health';
 import { household, members, rooms as seedRooms, tasks as seedTasks } from '@/lib/mock';
+import type { TemplatePack } from '@/lib/templates';
 import type { Household, Member, Profile, Room, Task } from '@/types';
 
 interface State {
@@ -120,6 +121,26 @@ export function addRoom(label: string): Room {
   state.rooms = [...state.rooms, room];
   emit();
   return room;
+}
+
+export function applyTemplate(packs: TemplatePack[]) {
+  const now = new Date().toISOString();
+  for (const pack of packs) {
+    const room: Room = { id: nextId('r'), label: pack.roomLabel, position: state.rooms.length };
+    state.rooms = [...state.rooms, room];
+    const newTasks: Task[] = pack.tasks.map((tk) => ({
+      id: nextId('t'),
+      roomId: room.id,
+      title: tk.title,
+      repeatMode: 'interval',
+      intervalDays: tk.intervalDays,
+      assigneeIds: [],
+      completions: [],
+      createdAt: now,
+    }));
+    state.tasks = [...state.tasks, ...newTasks];
+  }
+  emit();
 }
 
 export function deleteRoom(id: string) {

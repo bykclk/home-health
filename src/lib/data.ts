@@ -25,6 +25,7 @@ export const updateTask = impl.updateTask;
 export const deleteTask = impl.deleteTask;
 export const addRoom = impl.addRoom;
 export const deleteRoom = impl.deleteRoom;
+export const applyTemplate = impl.applyTemplate;
 
 // Onboarding
 export const createHousehold = impl.createHousehold;

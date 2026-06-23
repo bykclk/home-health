@@ -117,6 +117,7 @@ function RootNavigator() {
       <Stack.Screen name="profile" options={{ presentation: 'modal' }} />
       <Stack.Screen name="household" options={{ presentation: 'modal' }} />
       <Stack.Screen name="upgrade" options={{ presentation: 'modal' }} />
+      <Stack.Screen name="quick-start" options={{ presentation: 'modal' }} />
     </Stack>
   );
 }

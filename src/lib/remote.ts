@@ -8,6 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import { initialBaselineISO } from '@/lib/health';
 import { queryClient } from '@/lib/queryClient';
 import { supabase } from '@/lib/supabase';
+import type { TemplatePack } from '@/lib/templates';
 import type { Household, Member, Profile, Room, Task } from '@/types';
 import type { TaskInput } from '@/lib/store';
 
@@ -246,6 +247,33 @@ export async function addRoom(label: string): Promise<void> {
 export async function deleteRoom(id: string) {
   const { error } = await supabase.from('rooms').delete().eq('id', id);
   if (error) throw error;
+  queryClient.invalidateQueries({ queryKey: ['rooms'] });
+  invalidateTasks();
+}
+
+export async function applyTemplate(packs: TemplatePack[]): Promise<void> {
+  const householdId = currentHouseholdId();
+  let position = (queryClient.getQueryData<Room[]>(['rooms', householdId]) ?? []).length;
+  for (const pack of packs) {
+    const { data: room, error } = await supabase
+      .from('rooms')
+      .insert({ household_id: householdId!, label: pack.roomLabel, position: position++ })
+      .select('id')
+      .single();
+    if (error) throw error;
+    if (pack.tasks.length) {
+      const rows = pack.tasks.map((tk) => ({
+        household_id: householdId!,
+        room_id: room.id,
+        title: tk.title,
+        repeat_mode: 'interval' as const,
+        interval_days: tk.intervalDays,
+        fixed_weekday: null,
+      }));
+      const { error: taskError } = await supabase.from('tasks').insert(rows);
+      if (taskError) throw taskError;
+    }
+  }
   queryClient.invalidateQueries({ queryKey: ['rooms'] });
   invalidateTasks();
 }

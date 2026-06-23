@@ -87,6 +87,30 @@
   "notifications": {
     "dueBody": "Bu görev yapılmalı"
   },
+  "quickStart": {
+    "title": "Hızlı başlangıç",
+    "subtitle": "Kuracağın odaları seç — sonra her şeyi düzenleyebilirsin.",
+    "cta": "Hızlı başla",
+    "add_one": "{{count}} oda ekle",
+    "add_other": "{{count}} oda ekle"
+  },
+  "tpl": {
+    "kitchen": "Mutfak",
+    "bathroom": "Banyo",
+    "livingRoom": "Salon",
+    "bedroom": "Yatak Odası",
+    "dishes": "Bulaşıkları yıka",
+    "wipeCounters": "Tezgahı sil",
+    "trash": "Çöpü çıkar",
+    "mopFloor": "Yeri paspasla",
+    "cleanSink": "Lavaboyu temizle",
+    "toilet": "Klozeti temizle",
+    "scrubShower": "Duşu ovala",
+    "vacuum": "Halıyı süpür",
+    "dust": "Rafların tozunu al",
+    "tidy": "Topla / düzenle",
+    "changeSheets": "Çarşafları değiştir"
+  },
   "upgrade": {
     "title": "Home Health Plus",
     "subtitle": "Tüm evinin kilidini aç.",

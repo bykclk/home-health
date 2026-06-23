@@ -87,6 +87,30 @@
   "notifications": {
     "dueBody": "This task is due"
   },
+  "quickStart": {
+    "title": "Quick start",
+    "subtitle": "Pick the rooms to set up — you can edit anything later.",
+    "cta": "Quick start",
+    "add_one": "Add {{count}} room",
+    "add_other": "Add {{count}} rooms"
+  },
+  "tpl": {
+    "kitchen": "Kitchen",
+    "bathroom": "Bathroom",
+    "livingRoom": "Living Room",
+    "bedroom": "Bedroom",
+    "dishes": "Do the dishes",
+    "wipeCounters": "Wipe the counters",
+    "trash": "Take out the trash",
+    "mopFloor": "Mop the floor",
+    "cleanSink": "Clean the sink",
+    "toilet": "Clean the toilet",
+    "scrubShower": "Scrub the shower",
+    "vacuum": "Vacuum the rug",
+    "dust": "Dust the shelves",
+    "tidy": "Tidy up",
+    "changeSheets": "Change the sheets"
+  },
   "upgrade": {
     "title": "Home Health Plus",
     "subtitle": "Unlock your whole home.",

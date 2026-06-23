@@ -38,6 +38,11 @@ export default function RoomsScreen() {
         contentContainerStyle={{ paddingTop: insets.top + 12, paddingHorizontal: 22, paddingBottom: 28 }}
         showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>{t('rooms.title')}</Text>
+        {rooms.length === 0 && (
+          <Pressable style={styles.quickStart} onPress={() => router.push('/quick-start')}>
+            <Text style={styles.quickStartText}>{t('quickStart.cta')}</Text>
+          </Pressable>
+        )}
         {rooms.map((room) => (
           <RoomCard
             key={room.id}
@@ -70,6 +75,14 @@ export default function RoomsScreen() {
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.bg },
   title: { fontFamily: fonts.serif, fontSize: 28, color: colors.text, marginBottom: 18 },
+  quickStart: {
+    paddingVertical: 15,
+    borderRadius: radii.md,
+    backgroundColor: colors.accent,
+    alignItems: 'center',
+    marginBottom: 14,
+  },
+  quickStartText: { fontSize: 15, fontFamily: fonts.bold, color: '#fff' },
   newRoom: {
     paddingVertical: 15,
     borderRadius: radii.md,

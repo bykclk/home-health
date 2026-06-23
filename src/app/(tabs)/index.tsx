@@ -79,6 +79,11 @@ export default function HomeScreen() {
           <Text style={styles.emptyText}>
             {tasks.length === 0 ? t('home.noTasksText') : t('home.allClearText')}
           </Text>
+          {tasks.length === 0 && (
+            <Pressable style={styles.quickStart} onPress={() => router.push('/quick-start')}>
+              <Text style={styles.quickStartText}>{t('quickStart.cta')}</Text>
+            </Pressable>
+          )}
         </View>
       )}
     </ScrollView>
@@ -135,4 +140,12 @@ const styles = StyleSheet.create({
   },
   emptyTitle: { fontFamily: fonts.serif, fontSize: 22, color: colors.text, marginBottom: 6 },
   emptyText: { fontSize: 14, color: colors.muted2, textAlign: 'center', lineHeight: 20 },
+  quickStart: {
+    marginTop: 20,
+    paddingVertical: 14,
+    paddingHorizontal: 28,
+    borderRadius: radii.md,
+    backgroundColor: colors.accent,
+  },
+  quickStartText: { fontSize: 15, fontFamily: fonts.bold, color: '#fff' },
 });
