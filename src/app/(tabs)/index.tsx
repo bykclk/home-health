@@ -1,13 +1,17 @@
 import { useRouter } from 'expo-router';
+import * as Haptics from 'expo-haptics';
 import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Svg, { Path } from 'react-native-svg';
 
 import { ScoreRing } from '@/components/ScoreRing';
 import { TaskCircle } from '@/components/TaskCircle';
+import { celebrate } from '@/lib/celebration';
 import { homeHealth, streak, taskState } from '@/lib/health';
-import { useRooms, useTasks } from '@/lib/data';
-import { colors, fonts, radii } from '@/theme';
+import { completeTask, useRooms, useTasks } from '@/lib/data';
+import { colors, fonts, radii, shadow } from '@/theme';
+import type { Task, TaskState } from '@/types';
 
 function caption(score: number): string {
   if (score >= 85) return 'home.captionGreat';
@@ -26,6 +30,12 @@ export default function HomeScreen() {
   const score = homeHealth(tasks);
   const streakDays = streak(tasks);
   const roomLabel = (id: string) => rooms.find((r) => r.id === id)?.label ?? '';
+
+  const onComplete = (task: Task, state: TaskState) => {
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    completeTask(task.id);
+    celebrate({ taskTitle: task.title, streak: streak(tasks) + (state.done ? 0 : 1) });
+  };
 
   // Only tasks that need attention (not clean), most urgent first.
   const attention = tasks
@@ -60,14 +70,25 @@ export default function HomeScreen() {
           <Text style={styles.sectionLabel}>{t('home.needsAttention')}</Text>
           <View style={styles.grid}>
             {attention.map(({ task, state }) => (
-              <Pressable
-                key={task.id}
-                style={styles.gridItem}
-                onPress={() => router.push(`/task/${task.id}`)}>
-                <TaskCircle size={122} state={state} showText />
-                <Text style={styles.taskTitle}>{task.title}</Text>
-                <Text style={styles.taskRoom}>{roomLabel(task.roomId)}</Text>
-              </Pressable>
+              <View key={task.id} style={styles.gridItem}>
+                <View style={styles.circleWrap}>
+                  <TaskCircle
+                    size={122}
+                    state={state}
+                    showText
+                    onPress={() => router.push(`/task/${task.id}`)}
+                  />
+                  <Pressable style={styles.doneBadge} hitSlop={8} onPress={() => onComplete(task, state)}>
+                    <Svg width={17} height={17} viewBox="0 0 14 14">
+                      <Path d="M3 7.5L6 10.5L11 4" stroke="#fff" strokeWidth={2.4} fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                    </Svg>
+                  </Pressable>
+                </View>
+                <Pressable onPress={() => router.push(`/task/${task.id}`)} style={styles.labels}>
+                  <Text style={styles.taskTitle}>{task.title}</Text>
+                  <Text style={styles.taskRoom}>{roomLabel(task.roomId)}</Text>
+                </Pressable>
+              </View>
             ))}
           </View>
         </>
@@ -130,6 +151,22 @@ const styles = StyleSheet.create({
   },
   grid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', rowGap: 22 },
   gridItem: { width: '47%', alignItems: 'center', gap: 8 },
+  circleWrap: { width: 122, height: 122 },
+  doneBadge: {
+    position: 'absolute',
+    top: -2,
+    right: -2,
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    backgroundColor: colors.accent,
+    borderWidth: 3,
+    borderColor: colors.bg,
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...shadow.card,
+  },
+  labels: { alignItems: 'center', gap: 2 },
   taskTitle: { fontSize: 14, fontFamily: fonts.semibold, color: colors.text, textAlign: 'center', lineHeight: 17 },
   taskRoom: { fontSize: 12, color: colors.muted, textAlign: 'center' },
 
