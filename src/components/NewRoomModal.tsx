@@ -3,27 +3,34 @@ import { useTranslation } from 'react-i18next';
 import { Modal, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import Animated, { FadeIn, ZoomIn } from 'react-native-reanimated';
 
+import { EmojiPicker } from '@/components/EmojiPicker';
 import { colors, fonts, radii } from '@/theme';
 
 interface Props {
   visible: boolean;
   onClose: () => void;
-  onAdd: (label: string) => void;
+  onAdd: (label: string, emoji?: string) => void;
 }
 
 export function NewRoomModal({ visible, onClose, onAdd }: Props) {
   const { t } = useTranslation();
   const [value, setValue] = useState('');
+  const [emoji, setEmoji] = useState<string | undefined>();
+
+  const reset = () => {
+    setValue('');
+    setEmoji(undefined);
+  };
 
   const submit = () => {
     if (!value.trim()) return;
-    onAdd(value.trim());
-    setValue('');
+    onAdd(value.trim(), emoji);
+    reset();
     onClose();
   };
 
   const close = () => {
-    setValue('');
+    reset();
     onClose();
   };
 
@@ -44,6 +51,9 @@ export function NewRoomModal({ visible, onClose, onAdd }: Props) {
             onSubmitEditing={submit}
             returnKeyType="done"
           />
+          <View style={styles.picker}>
+            <EmojiPicker value={emoji} onChange={setEmoji} palette="room" />
+          </View>
           <View style={styles.actions}>
             <Pressable style={styles.cancelBtn} onPress={close}>
               <Text style={styles.cancelText}>{t('common.cancel')}</Text>
@@ -77,8 +87,9 @@ const styles = StyleSheet.create({
     fontSize: 19,
     fontFamily: fonts.serif,
     color: colors.text,
-    marginBottom: 22,
+    marginBottom: 16,
   },
+  picker: { marginHorizontal: -24, paddingHorizontal: 24, marginBottom: 18 },
   actions: { flexDirection: 'row', gap: 10 },
   cancelBtn: { flex: 1, paddingVertical: 13, borderRadius: 14, borderWidth: 1.5, borderColor: colors.line5, alignItems: 'center' },
   cancelText: { fontSize: 15, fontFamily: fonts.bold, color: colors.muted2 },

@@ -159,6 +159,7 @@
     "titleNew": "New task",
     "titleEdit": "Edit task",
     "namePlaceholder": "Task name (e.g. Vacuum the rug)",
+    "emoji": "EMOJI",
     "room": "ROOM",
     "repeat": "REPEAT",
     "modeInterval": "Interval (days)",

@@ -69,18 +69,18 @@ async function fetchMembers(householdId: string): Promise<Member[]> {
 async function fetchRooms(householdId: string): Promise<Room[]> {
   const { data, error } = await supabase
     .from('rooms')
-    .select('id, label, position')
+    .select('id, label, position, emoji')
     .eq('household_id', householdId)
     .order('position', { ascending: true });
   if (error) throw error;
-  return (data ?? []).map((r) => ({ id: r.id, label: r.label, position: r.position }));
+  return (data ?? []).map((r) => ({ id: r.id, label: r.label, position: r.position, emoji: r.emoji ?? undefined }));
 }
 
 async function fetchTasks(householdId: string): Promise<Task[]> {
   const { data, error } = await supabase
     .from('tasks')
     .select(
-      'id, room_id, title, repeat_mode, interval_days, fixed_weekday, created_at, task_assignees(user_id), completions(completed_at)'
+      'id, room_id, title, repeat_mode, interval_days, fixed_weekday, created_at, emoji, task_assignees(user_id), completions(completed_at)'
     )
     .eq('household_id', householdId);
   if (error) throw error;
@@ -94,6 +94,7 @@ async function fetchTasks(householdId: string): Promise<Task[]> {
     assigneeIds: (t.task_assignees ?? []).map((a: any) => a.user_id),
     completions: (t.completions ?? []).map((c: any) => c.completed_at),
     createdAt: t.created_at,
+    emoji: t.emoji ?? undefined,
   }));
 }
 
@@ -193,6 +194,7 @@ export async function addTask(input: TaskInput): Promise<void> {
       interval_days: input.intervalDays ?? null,
       fixed_weekday: input.fixedWeekday ?? null,
       created_at: initialBaselineISO(input),
+      emoji: input.emoji ?? null,
     })
     .select('id')
     .single();
@@ -212,6 +214,7 @@ export async function updateTask(id: string, patch: Partial<TaskInput>) {
       ...(patch.roomId !== undefined ? { room_id: patch.roomId } : {}),
       ...(patch.title !== undefined ? { title: patch.title.trim() } : {}),
       ...(patch.repeatMode !== undefined ? { repeat_mode: patch.repeatMode } : {}),
+      ...(patch.emoji !== undefined ? { emoji: patch.emoji ?? null } : {}),
       interval_days: patch.repeatMode === 'interval' ? patch.intervalDays ?? null : null,
       fixed_weekday: patch.repeatMode === 'fixed' ? patch.fixedWeekday ?? null : null,
     })
@@ -234,12 +237,12 @@ export async function deleteTask(id: string) {
   invalidateTasks();
 }
 
-export async function addRoom(label: string): Promise<void> {
+export async function addRoom(label: string, emoji?: string): Promise<void> {
   const householdId = currentHouseholdId();
   const rooms = queryClient.getQueryData<Room[]>(['rooms', householdId]) ?? [];
   const { error } = await supabase
     .from('rooms')
-    .insert({ household_id: householdId!, label: label.trim(), position: rooms.length });
+    .insert({ household_id: householdId!, label: label.trim(), position: rooms.length, emoji: emoji ?? null });
   if (error) throw error;
   queryClient.invalidateQueries({ queryKey: ['rooms'] });
 }
@@ -257,7 +260,7 @@ export async function applyTemplate(packs: TemplatePack[]): Promise<void> {
   for (const pack of packs) {
     const { data: room, error } = await supabase
       .from('rooms')
-      .insert({ household_id: householdId!, label: pack.roomLabel, position: position++ })
+      .insert({ household_id: householdId!, label: pack.roomLabel, position: position++, emoji: pack.roomEmoji ?? null })
       .select('id')
       .single();
     if (error) throw error;
@@ -269,6 +272,7 @@ export async function applyTemplate(packs: TemplatePack[]): Promise<void> {
         repeat_mode: 'interval' as const,
         interval_days: tk.intervalDays,
         fixed_weekday: null,
+        emoji: tk.emoji ?? null,
       }));
       const { error: taskError } = await supabase.from('tasks').insert(rows);
       if (taskError) throw taskError;

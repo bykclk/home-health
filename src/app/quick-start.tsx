@@ -42,7 +42,8 @@ export default function QuickStartScreen() {
   const add = () => {
     const packs = TEMPLATES.filter((r) => selected.has(r.id)).map((r) => ({
       roomLabel: t(r.labelKey),
-      tasks: r.tasks.map((tk) => ({ title: t(tk.titleKey), intervalDays: tk.intervalDays })),
+      roomEmoji: r.emoji,
+      tasks: r.tasks.map((tk) => ({ title: t(tk.titleKey), intervalDays: tk.intervalDays, emoji: tk.emoji })),
     }));
     if (packs.length) applyTemplate(packs);
     safeBack();
@@ -65,7 +66,9 @@ export default function QuickStartScreen() {
           return (
             <Pressable key={room.id} style={[styles.card, on && styles.cardOn]} onPress={() => toggle(room.id)}>
               <View style={{ flex: 1, minWidth: 0 }}>
-                <Text style={styles.roomLabel}>{t(room.labelKey)}</Text>
+                <Text style={styles.roomLabel}>
+                  {room.emoji} {t(room.labelKey)}
+                </Text>
                 <Text style={styles.tasks} numberOfLines={2}>
                   {room.tasks.map((tk) => t(tk.titleKey)).join(' · ')}
                 </Text>

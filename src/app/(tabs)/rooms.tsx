@@ -66,7 +66,7 @@ export default function RoomsScreen() {
       <NewRoomModal
         visible={newRoomVisible}
         onClose={() => setNewRoomVisible(false)}
-        onAdd={(label) => addRoom(label)}
+        onAdd={(label, emoji) => addRoom(label, emoji)}
       />
     </>
   );

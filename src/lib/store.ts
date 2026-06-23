@@ -70,6 +70,7 @@ export interface TaskInput {
   assigneeIds: string[];
   /** Starting dirtiness for a new task, 0 (clean) .. 1 (due now). */
   dirtiness?: number;
+  emoji?: string;
 }
 
 export function completeTask(id: string) {
@@ -100,6 +101,7 @@ export function addTask(input: TaskInput): Task {
     assigneeIds: input.assigneeIds,
     completions: [],
     createdAt: initialBaselineISO(input),
+    emoji: input.emoji,
   };
   state.tasks = [...state.tasks, task];
   emit();
@@ -116,8 +118,8 @@ export function deleteTask(id: string) {
   emit();
 }
 
-export function addRoom(label: string): Room {
-  const room: Room = { id: nextId('r'), label: label.trim(), position: state.rooms.length };
+export function addRoom(label: string, emoji?: string): Room {
+  const room: Room = { id: nextId('r'), label: label.trim(), position: state.rooms.length, emoji };
   state.rooms = [...state.rooms, room];
   emit();
   return room;
@@ -126,7 +128,7 @@ export function addRoom(label: string): Room {
 export function applyTemplate(packs: TemplatePack[]) {
   const now = new Date().toISOString();
   for (const pack of packs) {
-    const room: Room = { id: nextId('r'), label: pack.roomLabel, position: state.rooms.length };
+    const room: Room = { id: nextId('r'), label: pack.roomLabel, position: state.rooms.length, emoji: pack.roomEmoji };
     state.rooms = [...state.rooms, room];
     const newTasks: Task[] = pack.tasks.map((tk) => ({
       id: nextId('t'),
@@ -137,6 +139,7 @@ export function applyTemplate(packs: TemplatePack[]) {
       assigneeIds: [],
       completions: [],
       createdAt: now,
+      emoji: tk.emoji,
     }));
     state.tasks = [...state.tasks, ...newTasks];
   }

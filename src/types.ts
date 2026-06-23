@@ -13,6 +13,7 @@ export interface Room {
   id: string;
   label: string;
   position: number;
+  emoji?: string;
 }
 
 export interface Task {
@@ -29,6 +30,7 @@ export interface Task {
   completions: string[];
   /** ISO timestamp used as the freshness baseline before the first completion. */
   createdAt: string;
+  emoji?: string;
 }
 
 export interface Household {

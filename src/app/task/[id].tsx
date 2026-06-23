@@ -63,7 +63,7 @@ export default function TaskDetailScreen() {
       <ScrollView contentContainerStyle={styles.body} showsVerticalScrollIndicator={false}>
         <View style={styles.hero}>
           <TaskCircle size={150} state={state} showText />
-          <Text style={styles.title}>{task.title}</Text>
+          <Text style={styles.title}>{task.emoji ? `${task.emoji} ${task.title}` : task.title}</Text>
           {room && (
             <View style={styles.roomChip}>
               <Text style={styles.roomChipText}>{room.label}</Text>

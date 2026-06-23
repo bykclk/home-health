@@ -5,6 +5,7 @@ import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Avatar } from '@/components/Avatar';
+import { EmojiPicker } from '@/components/EmojiPicker';
 import { RepeatPicker } from '@/components/RepeatPicker';
 import { Slider } from '@/components/Slider';
 import { addTask, updateTask, useMembers, useRooms, useTask } from '@/lib/data';
@@ -26,6 +27,7 @@ export default function TaskFormScreen() {
   const [intervalDays, setIntervalDays] = useState(editing?.intervalDays ?? 3);
   const [fixedWeekday, setFixedWeekday] = useState(editing?.fixedWeekday ?? 1);
   const [assigneeIds, setAssigneeIds] = useState<string[]>(editing?.assigneeIds ?? []);
+  const [emoji, setEmoji] = useState<string | undefined>(editing?.emoji);
   const [dirtiness, setDirtiness] = useState(0);
 
   const canSave = title.trim().length > 0 && roomId.length > 0;
@@ -46,6 +48,7 @@ export default function TaskFormScreen() {
       fixedWeekday: mode === 'fixed' ? fixedWeekday : undefined,
       assigneeIds,
       dirtiness,
+      emoji,
     };
     if (editing) updateTask(editing.id, payload);
     else addTask(payload);
@@ -71,6 +74,11 @@ export default function TaskFormScreen() {
           style={styles.titleInput}
         />
 
+        <Text style={styles.section}>{t('add.emoji')}</Text>
+        <View style={styles.emojiPicker}>
+          <EmojiPicker value={emoji} onChange={setEmoji} palette="task" />
+        </View>
+
         <Text style={styles.section}>{t('add.room')}</Text>
         <View style={styles.chips}>
           {rooms.map((room) => {
@@ -80,7 +88,9 @@ export default function TaskFormScreen() {
                 key={room.id}
                 style={[styles.chip, selected ? styles.chipActive : styles.chipIdle]}
                 onPress={() => setRoomId(room.id)}>
-                <Text style={[styles.chipText, selected && styles.chipTextActive]}>{room.label}</Text>
+                <Text style={[styles.chipText, selected && styles.chipTextActive]}>
+                  {room.emoji ? `${room.emoji} ${room.label}` : room.label}
+                </Text>
               </Pressable>
             );
           })}
@@ -152,6 +162,7 @@ const styles = StyleSheet.create({
   },
   section: { fontSize: 12, fontFamily: fonts.bold, letterSpacing: 0.7, color: colors.muted, marginBottom: 11 },
 
+  emojiPicker: { marginHorizontal: -22, paddingHorizontal: 22, marginBottom: 26 },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 26 },
   chip: { paddingVertical: 9, paddingHorizontal: 15, borderRadius: radii.pill, borderWidth: 1.5 },
   chipIdle: { borderColor: colors.line, backgroundColor: colors.surface },

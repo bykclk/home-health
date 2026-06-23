@@ -85,7 +85,7 @@ export default function HomeScreen() {
                   </Pressable>
                 </View>
                 <Pressable onPress={() => router.push(`/task/${task.id}`)} style={styles.labels}>
-                  <Text style={styles.taskTitle}>{task.title}</Text>
+                  <Text style={styles.taskTitle}>{task.emoji ? `${task.emoji} ${task.title}` : task.title}</Text>
                   <Text style={styles.taskRoom}>{roomLabel(task.roomId)}</Text>
                 </Pressable>
               </View>

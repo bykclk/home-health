@@ -27,7 +27,7 @@ export function RoomCard({ room, tasks, onAddTask, onOpenTask, onEditTask, onDel
     <View style={styles.card}>
       <View style={styles.header}>
         <View style={{ flex: 1 }}>
-          <Text style={styles.label}>{room.label}</Text>
+          <Text style={styles.label}>{room.emoji ? `${room.emoji} ${room.label}` : room.label}</Text>
           <Text style={styles.count}>{t('rooms.taskCount', { count: tasks.length })}</Text>
         </View>
         <View style={styles.scoreWrap}>
@@ -50,7 +50,7 @@ export function RoomCard({ room, tasks, onAddTask, onOpenTask, onEditTask, onDel
               <View key={task.id} style={styles.manageRow}>
                 <View style={[styles.dot, { backgroundColor: s.fillColor }]} />
                 <View style={{ flex: 1, minWidth: 0 }}>
-                  <Text style={styles.manageTitle}>{task.title}</Text>
+                  <Text style={styles.manageTitle}>{task.emoji ? `${task.emoji} ${task.title}` : task.title}</Text>
                   <Text style={styles.manageMeta}>{repeatLabel(task, t, i18n.language)}</Text>
                 </View>
                 <Pressable style={styles.editBtn} onPress={() => onEditTask(task)}>
@@ -69,7 +69,7 @@ export function RoomCard({ room, tasks, onAddTask, onOpenTask, onEditTask, onDel
             <Pressable key={task.id} style={styles.chip} onPress={() => onOpenTask(task)}>
               <TaskCircle size={56} state={taskState(task)} />
               <Text style={styles.chipTitle} numberOfLines={2}>
-                {task.title}
+                {task.emoji ? `${task.emoji} ${task.title}` : task.title}
               </Text>
             </Pressable>
           ))}

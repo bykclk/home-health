@@ -51,7 +51,7 @@ export default function StatsScreen() {
           return (
             <View key={room.id} style={styles.roomRow}>
               <View style={styles.roomRowHeader}>
-                <Text style={styles.roomLabel}>{room.label}</Text>
+                <Text style={styles.roomLabel}>{room.emoji ? `${room.emoji} ${room.label}` : room.label}</Text>
                 <Text style={styles.roomPct}>{pct}%</Text>
               </View>
               <ProgressBar value={pct / 100} color={scoreColor(pct)} height={7} />
