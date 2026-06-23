@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import Svg, { Path } from 'react-native-svg';
 
 import { TaskCircle } from '@/components/TaskCircle';
 import { repeatLabel } from '@/lib/format';
@@ -13,11 +14,20 @@ interface Props {
   tasks: Task[];
   onAddTask: (room: Room) => void;
   onOpenTask: (task: Task) => void;
+  onCompleteTask: (task: Task) => void;
   onEditTask: (task: Task) => void;
   onDeleteTask: (task: Task) => void;
 }
 
-export function RoomCard({ room, tasks, onAddTask, onOpenTask, onEditTask, onDeleteTask }: Props) {
+export function RoomCard({
+  room,
+  tasks,
+  onAddTask,
+  onOpenTask,
+  onCompleteTask,
+  onEditTask,
+  onDeleteTask,
+}: Props) {
   const { t, i18n } = useTranslation();
   const [managing, setManaging] = useState(false);
   const score = roomScore(tasks);
@@ -66,12 +76,21 @@ export function RoomCard({ room, tasks, onAddTask, onOpenTask, onEditTask, onDel
       ) : (
         <View style={styles.chips}>
           {tasks.map((task) => (
-            <Pressable key={task.id} style={styles.chip} onPress={() => onOpenTask(task)}>
-              <TaskCircle size={56} state={taskState(task)} />
-              <Text style={styles.chipTitle} numberOfLines={2}>
-                {task.emoji ? `${task.emoji} ${task.title}` : task.title}
-              </Text>
-            </Pressable>
+            <View key={task.id} style={styles.chip}>
+              <View style={styles.chipCircle}>
+                <TaskCircle size={56} state={taskState(task)} onPress={() => onOpenTask(task)} />
+                <Pressable style={styles.chipBadge} hitSlop={6} onPress={() => onCompleteTask(task)}>
+                  <Svg width={10} height={10} viewBox="0 0 14 14">
+                    <Path d="M3 7.5L6 10.5L11 4" stroke="#fff" strokeWidth={2.6} fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                  </Svg>
+                </Pressable>
+              </View>
+              <Pressable onPress={() => onOpenTask(task)}>
+                <Text style={styles.chipTitle} numberOfLines={2}>
+                  {task.emoji ? `${task.emoji} ${task.title}` : task.title}
+                </Text>
+              </Pressable>
+            </View>
           ))}
         </View>
       )}
@@ -112,6 +131,20 @@ const styles = StyleSheet.create({
 
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 14 },
   chip: { alignItems: 'center', gap: 6, width: 64 },
+  chipCircle: { width: 56, height: 56 },
+  chipBadge: {
+    position: 'absolute',
+    top: -3,
+    right: -3,
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    backgroundColor: colors.accent,
+    borderWidth: 2,
+    borderColor: colors.surface,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   chipTitle: { fontSize: 10.5, fontFamily: fonts.semibold, color: colors.text, textAlign: 'center', lineHeight: 13 },
 
   manageRow: {

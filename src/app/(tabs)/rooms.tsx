@@ -6,6 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { NewRoomModal } from '@/components/NewRoomModal';
 import { RoomCard } from '@/components/RoomCard';
+import { completeWithCelebration } from '@/lib/complete';
 import { addRoom, deleteTask, useRooms, useTasks } from '@/lib/data';
 import { FREE_ROOM_LIMIT, useIsPremium } from '@/lib/premium';
 import { colors, fonts, radii } from '@/theme';
@@ -50,6 +51,7 @@ export default function RoomsScreen() {
             tasks={tasks.filter((tk) => tk.roomId === room.id)}
             onAddTask={openAdd}
             onOpenTask={openTask}
+            onCompleteTask={(task) => completeWithCelebration(task, tasks)}
             onEditTask={openEdit}
             onDeleteTask={(task) => deleteTask(task.id)}
           />

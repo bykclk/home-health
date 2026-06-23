@@ -1,5 +1,4 @@
 import { useRouter } from 'expo-router';
-import * as Haptics from 'expo-haptics';
 import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -7,11 +6,11 @@ import Svg, { Path } from 'react-native-svg';
 
 import { ScoreRing } from '@/components/ScoreRing';
 import { TaskCircle } from '@/components/TaskCircle';
-import { celebrate } from '@/lib/celebration';
+import { completeWithCelebration } from '@/lib/complete';
 import { homeHealth, streak, taskState } from '@/lib/health';
-import { completeTask, useRooms, useTasks } from '@/lib/data';
+import { useRooms, useTasks } from '@/lib/data';
 import { colors, fonts, radii, shadow } from '@/theme';
-import type { Task, TaskState } from '@/types';
+import type { Task } from '@/types';
 
 function caption(score: number): string {
   if (score >= 85) return 'home.captionGreat';
@@ -31,11 +30,7 @@ export default function HomeScreen() {
   const streakDays = streak(tasks);
   const roomLabel = (id: string) => rooms.find((r) => r.id === id)?.label ?? '';
 
-  const onComplete = (task: Task, state: TaskState) => {
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    completeTask(task.id);
-    celebrate({ taskTitle: task.title, streak: streak(tasks) + (state.done ? 0 : 1) });
-  };
+  const onComplete = (task: Task) => completeWithCelebration(task, tasks);
 
   // Only tasks that need attention (not clean), most urgent first.
   const attention = tasks
@@ -78,7 +73,7 @@ export default function HomeScreen() {
                     showText
                     onPress={() => router.push(`/task/${task.id}`)}
                   />
-                  <Pressable style={styles.doneBadge} hitSlop={8} onPress={() => onComplete(task, state)}>
+                  <Pressable style={styles.doneBadge} hitSlop={8} onPress={() => onComplete(task)}>
                     <Svg width={17} height={17} viewBox="0 0 14 14">
                       <Path d="M3 7.5L6 10.5L11 4" stroke="#fff" strokeWidth={2.4} fill="none" strokeLinecap="round" strokeLinejoin="round" />
                     </Svg>

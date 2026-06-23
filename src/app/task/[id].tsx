@@ -1,5 +1,4 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import * as Haptics from 'expo-haptics';
 import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -7,10 +6,10 @@ import Svg, { Path } from 'react-native-svg';
 
 import { Avatar } from '@/components/Avatar';
 import { TaskCircle } from '@/components/TaskCircle';
-import { celebrate } from '@/lib/celebration';
+import { completeWithCelebration } from '@/lib/complete';
 import { relativeWhen, repeatLabel } from '@/lib/format';
-import { streak, taskState } from '@/lib/health';
-import { completeTask, deleteTask, uncompleteTask, useMembers, useRooms, useTask, useTasks } from '@/lib/data';
+import { taskState } from '@/lib/health';
+import { deleteTask, uncompleteTask, useMembers, useRooms, useTask, useTasks } from '@/lib/data';
 import { colors, fonts, radii } from '@/theme';
 
 export default function TaskDetailScreen() {
@@ -33,9 +32,7 @@ export default function TaskDetailScreen() {
   const history = [...task.completions].sort((a, b) => Date.parse(b) - Date.parse(a)).slice(0, 8);
 
   const onComplete = () => {
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    completeTask(task.id);
-    celebrate({ taskTitle: task.title, streak: streak(tasks) + (state.done ? 0 : 1) });
+    completeWithCelebration(task, tasks);
     safeBack();
   };
 
