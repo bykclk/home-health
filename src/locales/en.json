@@ -20,7 +20,12 @@
     "captionGreat": "Your home is sparkling",
     "captionGood": "Looking good — keep it up",
     "captionOk": "A few things need attention",
-    "captionLow": "Time for a clean-up"
+    "captionLow": "Time for a clean-up",
+    "needsAttention": "Needs attention",
+    "allClearTitle": "All caught up",
+    "allClearText": "Nothing needs cleaning right now.",
+    "noTasksTitle": "No tasks yet",
+    "noTasksText": "Add tasks from the Rooms tab to start tracking."
   },
   "room": {
     "clean": "{{pct}} clean"

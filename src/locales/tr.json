@@ -20,7 +20,12 @@
     "captionGreat": "Eviniz pırıl pırıl",
     "captionGood": "İyi gidiyor — böyle devam",
     "captionOk": "Birkaç şey ilgi bekliyor",
-    "captionLow": "Toparlanma zamanı"
+    "captionLow": "Toparlanma zamanı",
+    "needsAttention": "İlgi bekliyor",
+    "allClearTitle": "Her şey yolunda",
+    "allClearText": "Şu an temizlenmesi gereken bir şey yok.",
+    "noTasksTitle": "Henüz görev yok",
+    "noTasksText": "Takibe başlamak için Odalar sekmesinden görev ekle."
   },
   "room": {
     "clean": "{{pct}} temiz"

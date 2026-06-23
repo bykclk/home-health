@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ScoreRing } from '@/components/ScoreRing';
 import { TaskCircle } from '@/components/TaskCircle';
-import { homeHealth, roomScore, streak, taskState } from '@/lib/health';
+import { homeHealth, streak, taskState } from '@/lib/health';
 import { useRooms, useTasks } from '@/lib/data';
 import { colors, fonts, radii } from '@/theme';
 
@@ -25,9 +25,13 @@ export default function HomeScreen() {
 
   const score = homeHealth(tasks);
   const streakDays = streak(tasks);
-  const roomsWithTasks = rooms
-    .map((room) => ({ room, tasks: tasks.filter((tk) => tk.roomId === room.id) }))
-    .filter((r) => r.tasks.length > 0);
+  const roomLabel = (id: string) => rooms.find((r) => r.id === id)?.label ?? '';
+
+  // Only tasks that need attention (not clean), most urgent first.
+  const attention = tasks
+    .map((task) => ({ task, state: taskState(task) }))
+    .filter(({ state }) => state.level !== 'clean')
+    .sort((a, b) => b.state.progress - a.state.progress);
 
   return (
     <ScrollView
@@ -51,25 +55,32 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      {roomsWithTasks.map(({ room, tasks: roomTasks }) => (
-        <View key={room.id} style={styles.roomSection}>
-          <View style={styles.roomHeader}>
-            <Text style={styles.roomLabel}>{room.label.toUpperCase()}</Text>
-            <Text style={styles.roomScore}>{t('room.clean', { pct: `${roomScore(roomTasks)}%` })}</Text>
-          </View>
+      {attention.length > 0 ? (
+        <>
+          <Text style={styles.sectionLabel}>{t('home.needsAttention')}</Text>
           <View style={styles.grid}>
-            {roomTasks.map((task) => (
+            {attention.map(({ task, state }) => (
               <Pressable
                 key={task.id}
                 style={styles.gridItem}
                 onPress={() => router.push(`/task/${task.id}`)}>
-                <TaskCircle size={122} state={taskState(task)} showText />
+                <TaskCircle size={122} state={state} showText />
                 <Text style={styles.taskTitle}>{task.title}</Text>
+                <Text style={styles.taskRoom}>{roomLabel(task.roomId)}</Text>
               </Pressable>
             ))}
           </View>
+        </>
+      ) : (
+        <View style={styles.empty}>
+          <Text style={styles.emptyTitle}>
+            {tasks.length === 0 ? t('home.noTasksTitle') : t('home.allClearTitle')}
+          </Text>
+          <Text style={styles.emptyText}>
+            {tasks.length === 0 ? t('home.noTasksText') : t('home.allClearText')}
+          </Text>
         </View>
-      ))}
+      )}
     </ScrollView>
   );
 }
@@ -104,11 +115,24 @@ const styles = StyleSheet.create({
   streakDot: { width: 8, height: 8, borderRadius: 2, backgroundColor: colors.accent, transform: [{ rotate: '45deg' }] },
   streakText: { fontSize: 12, fontFamily: fonts.bold, color: colors.text },
 
-  roomSection: { marginBottom: 24 },
-  roomHeader: { flexDirection: 'row', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 14 },
-  roomLabel: { fontSize: 12, fontFamily: fonts.bold, letterSpacing: 1, color: colors.muted },
-  roomScore: { fontSize: 12, fontFamily: fonts.semibold, color: colors.muted4 },
+  sectionLabel: {
+    fontSize: 12,
+    fontFamily: fonts.bold,
+    letterSpacing: 1,
+    color: colors.muted,
+    textTransform: 'uppercase',
+    marginBottom: 16,
+  },
   grid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', rowGap: 22 },
-  gridItem: { width: '47%', alignItems: 'center', gap: 10 },
+  gridItem: { width: '47%', alignItems: 'center', gap: 8 },
   taskTitle: { fontSize: 14, fontFamily: fonts.semibold, color: colors.text, textAlign: 'center', lineHeight: 17 },
+  taskRoom: { fontSize: 12, color: colors.muted, textAlign: 'center' },
+
+  empty: {
+    alignItems: 'center',
+    paddingVertical: 28,
+    paddingHorizontal: 20,
+  },
+  emptyTitle: { fontFamily: fonts.serif, fontSize: 22, color: colors.text, marginBottom: 6 },
+  emptyText: { fontSize: 14, color: colors.muted2, textAlign: 'center', lineHeight: 20 },
 });
