@@ -7,7 +7,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Avatar } from '@/components/Avatar';
 import { RepeatPicker } from '@/components/RepeatPicker';
 import { Slider } from '@/components/Slider';
-import { scoreColor } from '@/lib/health';
 import { addTask, updateTask, useMembers, useRooms, useTask } from '@/lib/data';
 import { colors, fonts, radii, withAlpha } from '@/theme';
 import type { RepeatMode } from '@/types';
@@ -100,7 +99,7 @@ export default function TaskFormScreen() {
         {!editing && (
           <>
             <Text style={styles.section}>{t('add.startState')}</Text>
-            <Slider value={dirtiness} onChange={setDirtiness} color={scoreColor((1 - dirtiness) * 100)} />
+            <Slider value={dirtiness} onChange={setDirtiness} />
             <View style={styles.sliderLabels}>
               <Text style={styles.sliderLabel}>{t('add.startClean')}</Text>
               <Text style={styles.sliderLabel}>{t('add.startDue')}</Text>
