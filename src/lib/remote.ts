@@ -5,6 +5,7 @@
  */
 import { useQuery } from '@tanstack/react-query';
 
+import { initialBaselineISO } from '@/lib/health';
 import { queryClient } from '@/lib/queryClient';
 import { supabase } from '@/lib/supabase';
 import type { Household, Member, Profile, Room, Task } from '@/types';
@@ -190,6 +191,7 @@ export async function addTask(input: TaskInput): Promise<void> {
       repeat_mode: input.repeatMode,
       interval_days: input.intervalDays ?? null,
       fixed_weekday: input.fixedWeekday ?? null,
+      created_at: initialBaselineISO(input),
     })
     .select('id')
     .single();

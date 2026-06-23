@@ -6,6 +6,7 @@
  */
 import { useSyncExternalStore } from 'react';
 
+import { initialBaselineISO } from '@/lib/health';
 import { household, members, rooms as seedRooms, tasks as seedTasks } from '@/lib/mock';
 import type { Household, Member, Profile, Room, Task } from '@/types';
 
@@ -66,6 +67,8 @@ export interface TaskInput {
   intervalDays?: number;
   fixedWeekday?: number;
   assigneeIds: string[];
+  /** Starting state for a new task: true = due now, false/undefined = clean. */
+  startDue?: boolean;
 }
 
 export function completeTask(id: string) {
@@ -95,7 +98,7 @@ export function addTask(input: TaskInput): Task {
     fixedWeekday: input.fixedWeekday,
     assigneeIds: input.assigneeIds,
     completions: [],
-    createdAt: new Date().toISOString(),
+    createdAt: initialBaselineISO(input),
   };
   state.tasks = [...state.tasks, task];
   emit();

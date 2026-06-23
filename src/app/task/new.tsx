@@ -25,6 +25,7 @@ export default function TaskFormScreen() {
   const [intervalDays, setIntervalDays] = useState(editing?.intervalDays ?? 3);
   const [fixedWeekday, setFixedWeekday] = useState(editing?.fixedWeekday ?? 1);
   const [assigneeIds, setAssigneeIds] = useState<string[]>(editing?.assigneeIds ?? []);
+  const [startDue, setStartDue] = useState(false);
 
   const canSave = title.trim().length > 0 && roomId.length > 0;
   const safeBack = () => (router.canGoBack() ? router.back() : router.replace('/'));
@@ -43,6 +44,7 @@ export default function TaskFormScreen() {
       intervalDays: mode === 'interval' ? intervalDays : undefined,
       fixedWeekday: mode === 'fixed' ? fixedWeekday : undefined,
       assigneeIds,
+      startDue,
     };
     if (editing) updateTask(editing.id, payload);
     else addTask(payload);
@@ -92,6 +94,31 @@ export default function TaskFormScreen() {
           fixedWeekday={fixedWeekday}
           onFixedWeekdayChange={setFixedWeekday}
         />
+
+        {!editing && (
+          <>
+            <Text style={styles.section}>{t('add.startState')}</Text>
+            <View style={styles.stateToggle}>
+              <Pressable
+                style={[styles.stateItem, !startDue && styles.stateActive]}
+                onPress={() => setStartDue(false)}>
+                <Text style={[styles.stateText, !startDue && styles.stateTextActive]}>
+                  {t('add.startClean')}
+                </Text>
+              </Pressable>
+              <Pressable
+                style={[styles.stateItem, startDue && styles.stateActive]}
+                onPress={() => setStartDue(true)}>
+                <Text style={[styles.stateText, startDue && styles.stateTextActive]}>
+                  {t('add.startDue')}
+                </Text>
+              </Pressable>
+            </View>
+            <Text style={styles.stateHint}>
+              {startDue ? t('add.startDueHint') : t('add.startCleanHint')}
+            </Text>
+          </>
+        )}
 
         <Text style={styles.section}>{t('add.assignee')}</Text>
         <View style={styles.memberChips}>
@@ -144,6 +171,13 @@ const styles = StyleSheet.create({
   chipActive: { borderColor: colors.accent, backgroundColor: withAlpha(colors.accent, 0.12) },
   chipText: { fontSize: 13, fontFamily: fonts.semibold, color: colors.text },
   chipTextActive: { color: colors.accentDark },
+
+  stateToggle: { flexDirection: 'row', backgroundColor: colors.track, borderRadius: radii.sm, padding: 4, marginBottom: 10 },
+  stateItem: { flex: 1, alignItems: 'center', paddingVertical: 10, borderRadius: 9 },
+  stateActive: { backgroundColor: colors.surface },
+  stateText: { fontSize: 13, fontFamily: fonts.bold, color: colors.muted },
+  stateTextActive: { color: colors.text },
+  stateHint: { fontSize: 12, color: colors.muted, marginBottom: 26, paddingHorizontal: 2 },
 
   memberChips: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginBottom: 30 },
   memberChip: {

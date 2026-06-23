@@ -3,9 +3,27 @@
  * so it can be unit-tested and shared across Home / Rooms / Stats / Detail.
  */
 import { colors, withAlpha } from '@/theme';
-import type { Task, TaskLevel, TaskState } from '@/types';
+import type { RepeatMode, Task, TaskLevel, TaskState } from '@/types';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
+
+/**
+ * Baseline (createdAt) for a brand-new task, based on the chosen starting state.
+ * "clean" => now (fresh, due in a full cycle); "due" => far enough in the past
+ * that it reads as due right away.
+ */
+export function initialBaselineISO(
+  input: { startDue?: boolean; repeatMode: RepeatMode; intervalDays?: number },
+  now: number = Date.now()
+): string {
+  if (!input.startDue) return new Date(now).toISOString();
+  if (input.repeatMode === 'interval') {
+    const days = Math.max(1, input.intervalDays ?? 7);
+    return new Date(now - days * DAY_MS).toISOString();
+  }
+  // Fixed weekday: before this week's occurrence, so it's due now.
+  return new Date(now - 8 * DAY_MS).toISOString();
+}
 
 /** Start of local day for a given time. */
 function startOfDay(ms: number): number {
