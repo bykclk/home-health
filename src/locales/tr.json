@@ -106,7 +106,7 @@
     "intervalHint": "Son yapıldığından bu kadar gün sonra kirlensin",
     "intervalUnit": "günde bir",
     "weeklyHint": "Her hafta bu gün",
-    "startState": "BAŞLANGIÇ DURUMU",
+    "startState": "ŞU AN NE KADAR KİRLİ?",
     "startClean": "Temiz",
     "startDue": "Yapılmalı",
     "startCleanHint": "Temiz başlar — süreç boyunca kirlenir.",

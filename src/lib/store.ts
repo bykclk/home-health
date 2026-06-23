@@ -67,8 +67,8 @@ export interface TaskInput {
   intervalDays?: number;
   fixedWeekday?: number;
   assigneeIds: string[];
-  /** Starting state for a new task: true = due now, false/undefined = clean. */
-  startDue?: boolean;
+  /** Starting dirtiness for a new task, 0 (clean) .. 1 (due now). */
+  dirtiness?: number;
 }
 
 export function completeTask(id: string) {

@@ -6,6 +6,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Avatar } from '@/components/Avatar';
 import { RepeatPicker } from '@/components/RepeatPicker';
+import { Slider } from '@/components/Slider';
+import { scoreColor } from '@/lib/health';
 import { addTask, updateTask, useMembers, useRooms, useTask } from '@/lib/data';
 import { colors, fonts, radii, withAlpha } from '@/theme';
 import type { RepeatMode } from '@/types';
@@ -25,7 +27,7 @@ export default function TaskFormScreen() {
   const [intervalDays, setIntervalDays] = useState(editing?.intervalDays ?? 3);
   const [fixedWeekday, setFixedWeekday] = useState(editing?.fixedWeekday ?? 1);
   const [assigneeIds, setAssigneeIds] = useState<string[]>(editing?.assigneeIds ?? []);
-  const [startDue, setStartDue] = useState(false);
+  const [dirtiness, setDirtiness] = useState(0);
 
   const canSave = title.trim().length > 0 && roomId.length > 0;
   const safeBack = () => (router.canGoBack() ? router.back() : router.replace('/'));
@@ -44,7 +46,7 @@ export default function TaskFormScreen() {
       intervalDays: mode === 'interval' ? intervalDays : undefined,
       fixedWeekday: mode === 'fixed' ? fixedWeekday : undefined,
       assigneeIds,
-      startDue,
+      dirtiness,
     };
     if (editing) updateTask(editing.id, payload);
     else addTask(payload);
@@ -98,25 +100,11 @@ export default function TaskFormScreen() {
         {!editing && (
           <>
             <Text style={styles.section}>{t('add.startState')}</Text>
-            <View style={styles.stateToggle}>
-              <Pressable
-                style={[styles.stateItem, !startDue && styles.stateActive]}
-                onPress={() => setStartDue(false)}>
-                <Text style={[styles.stateText, !startDue && styles.stateTextActive]}>
-                  {t('add.startClean')}
-                </Text>
-              </Pressable>
-              <Pressable
-                style={[styles.stateItem, startDue && styles.stateActive]}
-                onPress={() => setStartDue(true)}>
-                <Text style={[styles.stateText, startDue && styles.stateTextActive]}>
-                  {t('add.startDue')}
-                </Text>
-              </Pressable>
+            <Slider value={dirtiness} onChange={setDirtiness} color={scoreColor((1 - dirtiness) * 100)} />
+            <View style={styles.sliderLabels}>
+              <Text style={styles.sliderLabel}>{t('add.startClean')}</Text>
+              <Text style={styles.sliderLabel}>{t('add.startDue')}</Text>
             </View>
-            <Text style={styles.stateHint}>
-              {startDue ? t('add.startDueHint') : t('add.startCleanHint')}
-            </Text>
           </>
         )}
 
@@ -172,12 +160,8 @@ const styles = StyleSheet.create({
   chipText: { fontSize: 13, fontFamily: fonts.semibold, color: colors.text },
   chipTextActive: { color: colors.accentDark },
 
-  stateToggle: { flexDirection: 'row', backgroundColor: colors.track, borderRadius: radii.sm, padding: 4, marginBottom: 10 },
-  stateItem: { flex: 1, alignItems: 'center', paddingVertical: 10, borderRadius: 9 },
-  stateActive: { backgroundColor: colors.surface },
-  stateText: { fontSize: 13, fontFamily: fonts.bold, color: colors.muted },
-  stateTextActive: { color: colors.text },
-  stateHint: { fontSize: 12, color: colors.muted, marginBottom: 26, paddingHorizontal: 2 },
+  sliderLabels: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 8, marginBottom: 26 },
+  sliderLabel: { fontSize: 12, fontFamily: fonts.semibold, color: colors.muted },
 
   memberChips: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginBottom: 30 },
   memberChip: {

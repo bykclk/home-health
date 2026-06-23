@@ -106,7 +106,7 @@
     "intervalHint": "Gets dirty this many days after it was last done",
     "intervalUnit": "days apart",
     "weeklyHint": "Every week on this day",
-    "startState": "STARTING STATE",
+    "startState": "HOW DIRTY IS IT NOW?",
     "startClean": "Clean",
     "startDue": "Needs doing",
     "startCleanHint": "Starts clean — gets dirty over the cycle.",

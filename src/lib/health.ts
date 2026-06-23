@@ -8,21 +8,18 @@ import type { RepeatMode, Task, TaskLevel, TaskState } from '@/types';
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 /**
- * Baseline (createdAt) for a brand-new task, based on the chosen starting state.
- * "clean" => now (fresh, due in a full cycle); "due" => far enough in the past
- * that it reads as due right away.
+ * Baseline (createdAt) for a brand-new task from a 0..1 "dirtiness": 0 = just
+ * cleaned (fresh), 1 = fully dirty (due now). Backdates the baseline by that
+ * fraction of the repeat cycle so the task opens at the chosen fill level.
  */
 export function initialBaselineISO(
-  input: { startDue?: boolean; repeatMode: RepeatMode; intervalDays?: number },
+  input: { dirtiness?: number; repeatMode: RepeatMode; intervalDays?: number },
   now: number = Date.now()
 ): string {
-  if (!input.startDue) return new Date(now).toISOString();
-  if (input.repeatMode === 'interval') {
-    const days = Math.max(1, input.intervalDays ?? 7);
-    return new Date(now - days * DAY_MS).toISOString();
-  }
-  // Fixed weekday: before this week's occurrence, so it's due now.
-  return new Date(now - 8 * DAY_MS).toISOString();
+  const dirt = Math.max(0, Math.min(1, input.dirtiness ?? 0));
+  if (dirt <= 0) return new Date(now).toISOString();
+  const cycleDays = input.repeatMode === 'interval' ? Math.max(1, input.intervalDays ?? 7) : 7;
+  return new Date(now - dirt * cycleDays * DAY_MS).toISOString();
 }
 
 /** Start of local day for a given time. */
