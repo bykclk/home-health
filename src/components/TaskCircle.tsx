@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
+import { PressableScale } from '@/components/PressableScale';
 import { colors, fonts } from '@/theme';
 import type { TaskState } from '@/types';
 
@@ -29,7 +30,7 @@ export function TaskCircle({ size, state, showText = false, onPress }: Props) {
 
   const fillStyle = useAnimatedStyle(() => ({ height: height.value }));
 
-  const Wrapper = onPress ? Pressable : View;
+  const Wrapper = onPress ? PressableScale : View;
 
   return (
     <Wrapper onPress={onPress} style={[styles.circle, { width: size, height: size, borderRadius: size / 2 }]}>

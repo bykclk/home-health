@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
+import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import { colors, radii } from '@/theme';
 
@@ -11,10 +13,16 @@ interface Props {
 }
 
 export function ProgressBar({ value, color, height = 6, track = colors.track }: Props) {
-  const pct = `${Math.round(Math.max(0, Math.min(1, value)) * 100)}%` as const;
+  const clamped = Math.max(0, Math.min(1, value));
+  const w = useSharedValue(0);
+  useEffect(() => {
+    w.value = withTiming(clamped, { duration: 600, easing: Easing.out(Easing.cubic) });
+  }, [clamped, w]);
+  const fillStyle = useAnimatedStyle(() => ({ width: `${w.value * 100}%` }));
+
   return (
     <View style={[styles.track, { height, backgroundColor: track }]}>
-      <View style={{ width: pct, height: '100%', backgroundColor: color, borderRadius: radii.pill }} />
+      <Animated.View style={[{ height: '100%', backgroundColor: color, borderRadius: radii.pill }, fillStyle]} />
     </View>
   );
 }

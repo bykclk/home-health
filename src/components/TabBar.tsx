@@ -1,10 +1,12 @@
 import { BlurView } from 'expo-blur';
+import * as Haptics from 'expo-haptics';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Path, Rect } from 'react-native-svg';
 
+import { PressableScale } from '@/components/PressableScale';
 import { colors, fonts, radii, shadow } from '@/theme';
 
 const LABEL_KEYS: Record<string, string> = {
@@ -95,11 +97,17 @@ export function TabBar({ state, navigation }: TabBarProps) {
     <BlurView intensity={28} tint="light" style={[styles.bar, { paddingBottom: insets.bottom }]}>
       <View style={styles.row}>
         {left.map(renderTab)}
-        <Pressable style={styles.addButton} onPress={() => router.push('/task/new')}>
+        <PressableScale
+          style={styles.addButton}
+          scaleTo={0.88}
+          onPress={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+            router.push('/task/new');
+          }}>
           <View style={styles.addCircle}>
             <Text style={styles.addPlus}>+</Text>
           </View>
-        </Pressable>
+        </PressableScale>
         {right.map(renderTab)}
       </View>
     </BlurView>

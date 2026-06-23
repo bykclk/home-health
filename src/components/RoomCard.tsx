@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 
+import { PressableScale } from '@/components/PressableScale';
 import { TaskCircle } from '@/components/TaskCircle';
 import { repeatLabel } from '@/lib/format';
 import { roomScore, scoreColor, taskState } from '@/lib/health';
@@ -79,11 +80,11 @@ export function RoomCard({
             <View key={task.id} style={styles.chip}>
               <View style={styles.chipCircle}>
                 <TaskCircle size={56} state={taskState(task)} onPress={() => onOpenTask(task)} />
-                <Pressable style={styles.chipBadge} hitSlop={6} onPress={() => onCompleteTask(task)}>
+                <PressableScale style={styles.chipBadge} scaleTo={0.82} hitSlop={6} onPress={() => onCompleteTask(task)}>
                   <Svg width={10} height={10} viewBox="0 0 14 14">
                     <Path d="M3 7.5L6 10.5L11 4" stroke="#fff" strokeWidth={2.6} fill="none" strokeLinecap="round" strokeLinejoin="round" />
                   </Svg>
-                </Pressable>
+                </PressableScale>
               </View>
               <Pressable onPress={() => onOpenTask(task)}>
                 <Text style={styles.chipTitle} numberOfLines={2}>

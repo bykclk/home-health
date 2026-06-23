@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
 
 import { AnimatedNumber } from '@/components/AnimatedNumber';
+import { PressableScale } from '@/components/PressableScale';
 import { ScoreRing } from '@/components/ScoreRing';
 import { TaskCircle } from '@/components/TaskCircle';
 import { completeWithCelebration } from '@/lib/complete';
@@ -74,11 +75,11 @@ export default function HomeScreen() {
                     showText
                     onPress={() => router.push(`/task/${task.id}`)}
                   />
-                  <Pressable style={styles.doneBadge} hitSlop={8} onPress={() => onComplete(task)}>
+                  <PressableScale style={styles.doneBadge} scaleTo={0.85} hitSlop={8} onPress={() => onComplete(task)}>
                     <Svg width={17} height={17} viewBox="0 0 14 14">
                       <Path d="M3 7.5L6 10.5L11 4" stroke="#fff" strokeWidth={2.4} fill="none" strokeLinecap="round" strokeLinejoin="round" />
                     </Svg>
-                  </Pressable>
+                  </PressableScale>
                 </View>
                 <Pressable onPress={() => router.push(`/task/${task.id}`)} style={styles.labels}>
                   <Text style={styles.taskTitle}>{task.emoji ? `${task.emoji} ${task.title}` : task.title}</Text>
