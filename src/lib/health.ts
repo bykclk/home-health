@@ -106,6 +106,16 @@ export function taskState(task: Task, now: number = Date.now()): TaskState {
   return { progress, fillPct, level, fillColor, fillWash, daysLeft, dueShort, fillLabelKey, done };
 }
 
+/** Timestamp when a task next becomes due (progress reaches 1). */
+export function taskDueAt(task: Task, now: number = Date.now()): number {
+  if (task.repeatMode === 'fixed' && task.fixedWeekday != null) {
+    return nextWeekdayMs(now, task.fixedWeekday);
+  }
+  const baseline = lastDoneMs(task) ?? Date.parse(task.createdAt);
+  const intervalDays = Math.max(1, task.intervalDays ?? 7);
+  return baseline + intervalDays * DAY_MS;
+}
+
 /** Next date (>= today) whose weekday matches, as a midnight timestamp. */
 function nextWeekdayMs(now: number, weekday: number): number {
   const d = new Date(startOfDay(now));

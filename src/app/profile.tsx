@@ -1,11 +1,12 @@
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Alert, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Alert, Pressable, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Avatar } from '@/components/Avatar';
-import { getMyProfile, updateProfile } from '@/lib/data';
+import { getMyProfile, updateProfile, useRooms, useTasks } from '@/lib/data';
+import { areRemindersEnabled, setRemindersEnabled, syncReminders } from '@/lib/notifications';
 import { avatarColors, colors, fonts, radii } from '@/theme';
 
 export default function ProfileScreen() {
@@ -13,9 +14,12 @@ export default function ProfileScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
 
+  const tasks = useTasks();
+  const rooms = useRooms();
   const [name, setName] = useState('');
   const [color, setColor] = useState(avatarColors[0]);
   const [saving, setSaving] = useState(false);
+  const [remindersOn, setRemindersOn] = useState(false);
 
   useEffect(() => {
     getMyProfile().then((p) => {
@@ -23,7 +27,15 @@ export default function ProfileScreen() {
       setName(p.displayName);
       if (p.color) setColor(p.color);
     });
+    areRemindersEnabled().then(setRemindersOn);
   }, []);
+
+  const toggleReminders = async (value: boolean) => {
+    const result = await setRemindersEnabled(value);
+    setRemindersOn(result);
+    if (result) syncReminders(tasks, rooms, t('notifications.dueBody'));
+    else if (value) Alert.alert(t('profile.remindersDenied'));
+  };
 
   const safeBack = () => (router.canGoBack() ? router.back() : router.replace('/'));
   const initial = (name.trim()[0] || '?').toUpperCase();
@@ -78,6 +90,18 @@ export default function ProfileScreen() {
             </Pressable>
           ))}
         </View>
+
+        <View style={styles.reminderRow}>
+          <View style={styles.reminderText}>
+            <Text style={styles.reminderTitle}>{t('profile.reminders')}</Text>
+            <Text style={styles.reminderHint}>{t('profile.remindersHint')}</Text>
+          </View>
+          <Switch
+            value={remindersOn}
+            onValueChange={toggleReminders}
+            trackColor={{ true: colors.accent, false: colors.line5 }}
+          />
+        </View>
       </View>
     </View>
   );
@@ -113,4 +137,9 @@ const styles = StyleSheet.create({
   swatchWrap: { padding: 2 },
   swatch: { width: 44, height: 44, borderRadius: radii.pill, alignItems: 'center', justifyContent: 'center' },
   swatchDot: { width: 14, height: 14, borderRadius: radii.pill, backgroundColor: '#fff' },
+
+  reminderRow: { flexDirection: 'row', alignItems: 'center', gap: 14, marginTop: 34 },
+  reminderText: { flex: 1 },
+  reminderTitle: { fontSize: 16, fontFamily: fonts.semibold, color: colors.text },
+  reminderHint: { fontSize: 12, color: colors.muted, marginTop: 2, lineHeight: 16 },
 });

@@ -76,7 +76,13 @@
     "title": "Edit profile",
     "name": "Display name",
     "namePlaceholder": "Your name",
-    "color": "Avatar color"
+    "color": "Avatar color",
+    "reminders": "Reminders",
+    "remindersHint": "Get a morning reminder when a task comes due.",
+    "remindersDenied": "Enable notifications in Settings to get reminders."
+  },
+  "notifications": {
+    "dueBody": "This task is due"
   },
   "detail": {
     "repeat": "Repeat",

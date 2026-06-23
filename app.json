@@ -40,6 +40,7 @@
       "expo-localization",
       "expo-apple-authentication",
       ["@react-native-google-signin/google-signin", { "iosUrlScheme": "com.googleusercontent.apps.867735633533-299rmc2lgl2u9o62b2a8aieq1mqg367e" }],
+      ["expo-notifications", { "icon": "./assets/images/android-icon-monochrome.png", "color": "#4a754c" }],
       "./plugins/withModularHeaders"
     ],
     "experiments": {

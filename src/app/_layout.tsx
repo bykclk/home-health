@@ -8,9 +8,11 @@ import {
 import { Newsreader_500Medium } from '@expo-google-fonts/newsreader';
 import { QueryClientProvider, useQuery } from '@tanstack/react-query';
 import { Stack, useRouter, useSegments } from 'expo-router';
+import * as Notifications from 'expo-notifications';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
+import { Platform } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
@@ -71,6 +73,21 @@ function RootNavigator() {
   });
 
   useRealtimeSync(USE_MOCK ? undefined : householdQuery.data?.id);
+
+  // Open the task when a reminder notification is tapped.
+  useEffect(() => {
+    if (Platform.OS === 'web') return;
+    const openTask = (taskId: unknown) => {
+      if (typeof taskId === 'string') router.push(`/task/${taskId}`);
+    };
+    Notifications.getLastNotificationResponseAsync().then((r) =>
+      openTask(r?.notification.request.content.data?.taskId)
+    );
+    const sub = Notifications.addNotificationResponseReceivedListener((r) =>
+      openTask(r.notification.request.content.data?.taskId)
+    );
+    return () => sub.remove();
+  }, [router]);
 
   useEffect(() => {
     if (USE_MOCK || loading) return;

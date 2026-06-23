@@ -76,7 +76,13 @@
     "title": "Profili düzenle",
     "name": "Görünen ad",
     "namePlaceholder": "Adın",
-    "color": "Avatar rengi"
+    "color": "Avatar rengi",
+    "reminders": "Hatırlatmalar",
+    "remindersHint": "Bir görevin zamanı geldiğinde sabah hatırlatma al.",
+    "remindersDenied": "Hatırlatma almak için Ayarlar'dan bildirimlere izin ver."
+  },
+  "notifications": {
+    "dueBody": "Bu görev yapılmalı"
   },
   "detail": {
     "repeat": "Tekrar",
