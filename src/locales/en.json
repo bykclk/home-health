@@ -59,7 +59,18 @@
     "language": "Language",
     "signOut": "Sign out",
     "signOutConfirm": "Sign out of Home Health?",
-    "editProfile": "Edit profile"
+    "editProfile": "Edit profile",
+    "householdSettings": "Household settings"
+  },
+  "household": {
+    "title": "Household",
+    "name": "HOUSEHOLD NAME",
+    "members": "MEMBERS",
+    "you": "you",
+    "remove": "Remove",
+    "removeConfirm": "Remove {{name}} from the household?",
+    "leave": "Leave household",
+    "leaveConfirm": "Leave this household?"
   },
   "profile": {
     "title": "Edit profile",

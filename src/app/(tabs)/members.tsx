@@ -83,6 +83,10 @@ export default function MembersScreen() {
         <Text style={styles.editProfileText}>{t('members.editProfile')}</Text>
       </Pressable>
 
+      <Pressable style={[styles.editProfile, { marginTop: 10 }]} onPress={() => router.push('/household')}>
+        <Text style={styles.editProfileText}>{t('members.householdSettings')}</Text>
+      </Pressable>
+
       <Pressable style={styles.signOut} onPress={confirmSignOut}>
         <Text style={styles.signOutText}>{t('members.signOut')}</Text>
       </Pressable>

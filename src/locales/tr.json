@@ -59,7 +59,18 @@
     "language": "Dil",
     "signOut": "Çıkış yap",
     "signOutConfirm": "Home Health'ten çıkış yapılsın mı?",
-    "editProfile": "Profili düzenle"
+    "editProfile": "Profili düzenle",
+    "householdSettings": "Ev ayarları"
+  },
+  "household": {
+    "title": "Ev ayarları",
+    "name": "EV ADI",
+    "members": "ÜYELER",
+    "you": "sen",
+    "remove": "Çıkar",
+    "removeConfirm": "{{name}} evden çıkarılsın mı?",
+    "leave": "Evden ayrıl",
+    "leaveConfirm": "Bu evden ayrılasın mı?"
   },
   "profile": {
     "title": "Profili düzenle",

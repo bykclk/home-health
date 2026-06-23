@@ -16,7 +16,8 @@ interface AuthContextValue {
 }
 
 // A sentinel that satisfies the routing gate without hitting the network.
-const MOCK_SESSION = { user: { id: 'mock-user' } } as unknown as Session;
+// The id matches the first seed member so "me / owner" checks work in mock.
+const MOCK_SESSION = { user: { id: 'm_1' } } as unknown as Session;
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 

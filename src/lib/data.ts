@@ -30,6 +30,11 @@ export const deleteRoom = impl.deleteRoom;
 export const createHousehold = impl.createHousehold;
 export const joinHousehold = impl.joinHousehold;
 
+// Household management
+export const renameHousehold = impl.renameHousehold;
+export const removeMember = impl.removeMember;
+export const leaveHousehold = impl.leaveHousehold;
+
 // Profile
 export const getMyProfile = impl.getMyProfile;
 export const updateProfile = impl.updateProfile;

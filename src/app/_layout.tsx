@@ -98,6 +98,7 @@ function RootNavigator() {
       <Stack.Screen name="task/[id]" options={{ presentation: 'modal' }} />
       <Stack.Screen name="task/new" options={{ presentation: 'modal' }} />
       <Stack.Screen name="profile" options={{ presentation: 'modal' }} />
+      <Stack.Screen name="household" options={{ presentation: 'modal' }} />
     </Stack>
   );
 }

@@ -277,6 +277,39 @@ export async function joinHousehold(code: string): Promise<void> {
   adoptHousehold(data);
 }
 
+export async function renameHousehold(name: string): Promise<void> {
+  const householdId = currentHouseholdId();
+  const { error } = await supabase.from('households').update({ name: name.trim() }).eq('id', householdId!);
+  if (error) throw error;
+  await queryClient.invalidateQueries({ queryKey: ['household'] });
+}
+
+export async function removeMember(userId: string): Promise<void> {
+  const householdId = currentHouseholdId();
+  const { error } = await supabase
+    .from('household_members')
+    .delete()
+    .eq('household_id', householdId!)
+    .eq('user_id', userId);
+  if (error) throw error;
+  queryClient.invalidateQueries({ queryKey: ['members'] });
+}
+
+export async function leaveHousehold(): Promise<void> {
+  const householdId = currentHouseholdId();
+  const userId = await currentUserId();
+  if (!householdId || !userId) return;
+  const { error } = await supabase
+    .from('household_members')
+    .delete()
+    .eq('household_id', householdId)
+    .eq('user_id', userId);
+  if (error) throw error;
+  // Drop the active household so the routing gate sends us to onboarding.
+  queryClient.setQueryData(['household'], null);
+  queryClient.invalidateQueries({ queryKey: ['household'] });
+}
+
 // --- Profile -------------------------------------------------------------
 
 export async function getMyProfile(): Promise<Profile | null> {

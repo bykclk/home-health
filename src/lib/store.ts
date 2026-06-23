@@ -133,6 +133,20 @@ export function deleteRoom(id: string) {
 export async function createHousehold(_name: string): Promise<void> {}
 export async function joinHousehold(_code: string): Promise<void> {}
 
+export function renameHousehold(name: string) {
+  state.household = { ...state.household, name: name.trim() };
+  emit();
+}
+
+export function removeMember(userId: string) {
+  state.members = state.members.filter((m) => m.id !== userId);
+  emit();
+}
+
+export async function leaveHousehold(): Promise<void> {
+  // No-op in mock mode (there is no auth gate to fall back to).
+}
+
 // In mock mode the first seed member stands in for the current user.
 export async function getMyProfile(): Promise<Profile | null> {
   const me = state.members[0];
