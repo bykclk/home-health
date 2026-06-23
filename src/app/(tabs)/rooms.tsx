@@ -7,6 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NewRoomModal } from '@/components/NewRoomModal';
 import { RoomCard } from '@/components/RoomCard';
 import { addRoom, deleteTask, useRooms, useTasks } from '@/lib/data';
+import { FREE_ROOM_LIMIT, useIsPremium } from '@/lib/premium';
 import { colors, fonts, radii } from '@/theme';
 import type { Room, Task } from '@/types';
 
@@ -16,7 +17,13 @@ export default function RoomsScreen() {
   const insets = useSafeAreaInsets();
   const rooms = useRooms();
   const tasks = useTasks();
+  const isPremium = useIsPremium();
   const [newRoomVisible, setNewRoomVisible] = useState(false);
+
+  const onNewRoom = () => {
+    if (!isPremium && rooms.length >= FREE_ROOM_LIMIT) router.push('/upgrade');
+    else setNewRoomVisible(true);
+  };
 
   const openAdd = (room: Room) =>
     router.push({ pathname: '/task/new', params: { roomId: room.id } });
@@ -42,8 +49,12 @@ export default function RoomsScreen() {
             onDeleteTask={(task) => deleteTask(task.id)}
           />
         ))}
-        <Pressable style={styles.newRoom} onPress={() => setNewRoomVisible(true)}>
-          <Text style={styles.newRoomText}>{t('rooms.newRoom')}</Text>
+        <Pressable style={styles.newRoom} onPress={onNewRoom}>
+          <Text style={styles.newRoomText}>
+            {!isPremium && rooms.length >= FREE_ROOM_LIMIT
+              ? t('rooms.newRoomLocked')
+              : t('rooms.newRoom')}
+          </Text>
         </Pressable>
       </ScrollView>
 

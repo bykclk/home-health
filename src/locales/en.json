@@ -39,7 +39,8 @@
     "addTask": "+ Add task",
     "manage": "Manage",
     "done": "Done",
-    "newRoom": "+ New room"
+    "newRoom": "+ New room",
+    "newRoomLocked": "+ New room · Premium"
   },
   "stats": {
     "title": "Stats",
@@ -54,6 +55,8 @@
     "subtitle_other": "{{count}} members · shared tasks",
     "thisWeek": "this week",
     "invite": "+ Invite member",
+    "inviteLocked": "+ Invite member · Premium",
+    "goPremium": "Go Premium",
     "roleOwner": "Owner",
     "roleMember": "Member",
     "language": "Language",
@@ -83,6 +86,17 @@
   },
   "notifications": {
     "dueBody": "This task is due"
+  },
+  "upgrade": {
+    "title": "Home Health Plus",
+    "subtitle": "Unlock your whole home.",
+    "benefitRooms": "Unlimited rooms & tasks",
+    "benefitSharing": "Share with your whole household",
+    "benefitStats": "Advanced stats & history",
+    "benefitReminders": "Custom reminder times",
+    "cta": "Go Premium",
+    "note": "Subscription pricing coming soon.",
+    "active": "Premium active"
   },
   "detail": {
     "repeat": "Repeat",

@@ -9,6 +9,7 @@ import { MemberRow } from '@/components/MemberRow';
 import { useAuth } from '@/lib/auth';
 import { setAppLanguage, SUPPORTED_LANGUAGES } from '@/lib/i18n';
 import { useHousehold, useMembers, useTasks } from '@/lib/data';
+import { useIsPremium } from '@/lib/premium';
 import { colors, fonts, radii } from '@/theme';
 
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
@@ -21,7 +22,13 @@ export default function MembersScreen() {
   const members = useMembers();
   const tasks = useTasks();
   const { signOut } = useAuth();
+  const isPremium = useIsPremium();
   const [inviteVisible, setInviteVisible] = useState(false);
+
+  const onInvite = () => {
+    if (!isPremium) router.push('/upgrade');
+    else setInviteVisible(true);
+  };
 
   const confirmSignOut = () =>
     Alert.alert(t('members.signOutConfirm'), undefined, [
@@ -72,12 +79,17 @@ export default function MembersScreen() {
         />
       ))}
 
-      <Pressable
-        style={styles.invite}
-        onPress={() => setInviteVisible(true)}
-        disabled={!household.inviteCode}>
-        <Text style={styles.inviteText}>{t('members.invite')}</Text>
+      <Pressable style={styles.invite} onPress={onInvite}>
+        <Text style={styles.inviteText}>
+          {isPremium ? t('members.invite') : t('members.inviteLocked')}
+        </Text>
       </Pressable>
+
+      {!isPremium && (
+        <Pressable style={styles.premiumCta} onPress={() => router.push('/upgrade')}>
+          <Text style={styles.premiumCtaText}>{t('members.goPremium')}</Text>
+        </Pressable>
+      )}
 
       <Pressable style={styles.editProfile} onPress={() => router.push('/profile')}>
         <Text style={styles.editProfileText}>{t('members.editProfile')}</Text>
@@ -121,6 +133,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   inviteText: { fontSize: 15, fontFamily: fonts.bold, color: colors.accentDark },
+
+  premiumCta: {
+    marginTop: 12,
+    paddingVertical: 15,
+    borderRadius: radii.md,
+    backgroundColor: colors.accent,
+    alignItems: 'center',
+  },
+  premiumCtaText: { fontSize: 15, fontFamily: fonts.bold, color: '#fff' },
 
   editProfile: {
     marginTop: 20,

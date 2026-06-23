@@ -7,6 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Avatar } from '@/components/Avatar';
 import { getMyProfile, updateProfile, useRooms, useTasks } from '@/lib/data';
 import { areRemindersEnabled, setRemindersEnabled, syncReminders } from '@/lib/notifications';
+import { setPremium, useIsPremium } from '@/lib/premium';
 import { avatarColors, colors, fonts, radii } from '@/theme';
 
 export default function ProfileScreen() {
@@ -20,6 +21,7 @@ export default function ProfileScreen() {
   const [color, setColor] = useState(avatarColors[0]);
   const [saving, setSaving] = useState(false);
   const [remindersOn, setRemindersOn] = useState(false);
+  const isPremium = useIsPremium();
 
   useEffect(() => {
     getMyProfile().then((p) => {
@@ -102,6 +104,20 @@ export default function ProfileScreen() {
             trackColor={{ true: colors.accent, false: colors.line5 }}
           />
         </View>
+
+        {__DEV__ && (
+          <View style={styles.reminderRow}>
+            <View style={styles.reminderText}>
+              <Text style={styles.reminderTitle}>Premium (dev)</Text>
+              <Text style={styles.reminderHint}>Toggle to test free vs premium gates.</Text>
+            </View>
+            <Switch
+              value={isPremium}
+              onValueChange={setPremium}
+              trackColor={{ true: colors.accent, false: colors.line5 }}
+            />
+          </View>
+        )}
       </View>
     </View>
   );

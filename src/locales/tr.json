@@ -39,7 +39,8 @@
     "addTask": "+ Görev ekle",
     "manage": "Yönet",
     "done": "Bitti",
-    "newRoom": "+ Yeni oda ekle"
+    "newRoom": "+ Yeni oda ekle",
+    "newRoomLocked": "+ Yeni oda · Premium"
   },
   "stats": {
     "title": "İstatistik",
@@ -54,6 +55,8 @@
     "subtitle_other": "{{count}} üye · paylaşımlı görevler",
     "thisWeek": "bu hafta",
     "invite": "+ Üye davet et",
+    "inviteLocked": "+ Üye davet et · Premium",
+    "goPremium": "Premium'a geç",
     "roleOwner": "Yönetici",
     "roleMember": "Üye",
     "language": "Dil",
@@ -83,6 +86,17 @@
   },
   "notifications": {
     "dueBody": "Bu görev yapılmalı"
+  },
+  "upgrade": {
+    "title": "Home Health Plus",
+    "subtitle": "Tüm evinin kilidini aç.",
+    "benefitRooms": "Sınırsız oda ve görev",
+    "benefitSharing": "Tüm ev halkıyla paylaş",
+    "benefitStats": "Gelişmiş istatistik ve geçmiş",
+    "benefitReminders": "Özel hatırlatma saatleri",
+    "cta": "Premium'a geç",
+    "note": "Abonelik fiyatlandırması yakında.",
+    "active": "Premium aktif"
   },
   "detail": {
     "repeat": "Tekrar",
