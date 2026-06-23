@@ -1,8 +1,12 @@
 import type { ReactNode } from 'react';
+import { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
+import Animated, { Easing, useAnimatedProps, useSharedValue, withTiming } from 'react-native-reanimated';
 import Svg, { Circle } from 'react-native-svg';
 
 import { colors } from '@/theme';
+
+const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 interface Props {
   size: number;
@@ -27,11 +31,18 @@ export function ScoreRing({
   const clamped = Math.max(0, Math.min(1, progress));
   const center = size / 2;
 
+  const sv = useSharedValue(0);
+  useEffect(() => {
+    sv.value = withTiming(clamped, { duration: 800, easing: Easing.out(Easing.cubic) });
+  }, [clamped, sv]);
+
+  const animatedProps = useAnimatedProps(() => ({ strokeDashoffset: c * (1 - sv.value) }));
+
   return (
     <View style={{ width: size, height: size }}>
       <Svg width={size} height={size}>
         <Circle cx={center} cy={center} r={r} stroke={trackColor} strokeWidth={stroke} fill="none" />
-        <Circle
+        <AnimatedCircle
           cx={center}
           cy={center}
           r={r}
@@ -40,7 +51,7 @@ export function ScoreRing({
           fill="none"
           strokeLinecap="round"
           strokeDasharray={c}
-          strokeDashoffset={c * (1 - clamped)}
+          animatedProps={animatedProps}
           transform={`rotate(-90 ${center} ${center})`}
         />
       </Svg>

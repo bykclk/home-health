@@ -4,6 +4,7 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
 
+import { AnimatedNumber } from '@/components/AnimatedNumber';
 import { ScoreRing } from '@/components/ScoreRing';
 import { TaskCircle } from '@/components/TaskCircle';
 import { completeWithCelebration } from '@/lib/complete';
@@ -47,7 +48,7 @@ export default function HomeScreen() {
         <ScoreRing size={172} stroke={13} progress={score / 100}>
           <View style={styles.ringInner}>
             <Text style={styles.scoreNum}>
-              {score}
+              <AnimatedNumber value={score} />
               <Text style={styles.scorePct}>%</Text>
             </Text>
             <Text style={styles.scoreLabel}>{t('home.scoreLabel')}</Text>

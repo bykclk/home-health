@@ -1,8 +1,8 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
 import ConfettiCannon from 'react-native-confetti-cannon';
-import Animated, { FadeIn, ZoomIn } from 'react-native-reanimated';
+import Animated, { FadeIn, FadeOut, ZoomIn } from 'react-native-reanimated';
 import Svg, { Path } from 'react-native-svg';
 
 import { dismissCelebration, useCelebration } from '@/lib/celebration';
@@ -15,10 +15,17 @@ export function Celebration() {
   const data = useCelebration();
   const cannon = useRef(null);
 
+  // Auto-dismiss so the flow stays smooth; tapping still closes it early.
+  useEffect(() => {
+    if (!data) return;
+    const id = setTimeout(dismissCelebration, 1600);
+    return () => clearTimeout(id);
+  }, [data]);
+
   if (!data) return null;
 
   return (
-    <Animated.View entering={FadeIn.duration(200)} style={styles.overlay}>
+    <Animated.View entering={FadeIn.duration(200)} exiting={FadeOut.duration(280)} style={styles.overlay}>
       <Pressable style={StyleSheet.absoluteFill} onPress={dismissCelebration} />
       <ConfettiCannon
         ref={cannon}
