@@ -111,6 +111,23 @@
     "tidy": "Topla / düzenle",
     "changeSheets": "Çarşafları değiştir"
   },
+  "achievements": {
+    "title": "Başarımlar",
+    "count": "{{total}} rozetten {{unlocked}} tanesi açıldı",
+    "unlocked": "Açıldı ✓",
+    "items": {
+      "first": { "title": "İlk temizlik", "desc": "İlk görevini tamamla" },
+      "streak3": { "title": "İvme kazandın", "desc": "{{goal}} günlük seriye ulaş" },
+      "ten": { "title": "Isındın", "desc": "{{goal}} görev tamamla" },
+      "rooms3": { "title": "Yerleştin", "desc": "{{goal}} oda kur" },
+      "streak7": { "title": "Hafta savaşçısı", "desc": "{{goal}} günlük seriye ulaş" },
+      "team": { "title": "Takım işi", "desc": "Bir ev arkadaşıyla paylaş" },
+      "fifty": { "title": "Yarım yüz", "desc": "{{goal}} görev tamamla" },
+      "spotless": { "title": "Tertemiz", "desc": "%{{goal}} ev sağlığına ulaş" },
+      "hundred": { "title": "Yüzler kulübü", "desc": "{{goal}} görev tamamla" },
+      "streak30": { "title": "Durdurulamaz", "desc": "{{goal}} günlük seriye ulaş" }
+    }
+  },
   "upgrade": {
     "title": "Home Health Plus",
     "subtitle": "Tüm evinin kilidini aç.",

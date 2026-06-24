@@ -111,6 +111,23 @@
     "tidy": "Tidy up",
     "changeSheets": "Change the sheets"
   },
+  "achievements": {
+    "title": "Achievements",
+    "count": "{{unlocked}} of {{total}} unlocked",
+    "unlocked": "Unlocked ✓",
+    "items": {
+      "first": { "title": "First clean", "desc": "Complete your first task" },
+      "streak3": { "title": "On a roll", "desc": "Reach a {{goal}}-day streak" },
+      "ten": { "title": "Getting going", "desc": "Complete {{goal}} tasks" },
+      "rooms3": { "title": "Settled in", "desc": "Set up {{goal}} rooms" },
+      "streak7": { "title": "Week warrior", "desc": "Reach a {{goal}}-day streak" },
+      "team": { "title": "Team effort", "desc": "Share with a housemate" },
+      "fifty": { "title": "Half a hundred", "desc": "Complete {{goal}} tasks" },
+      "spotless": { "title": "Spotless", "desc": "Reach {{goal}}% home health" },
+      "hundred": { "title": "Centurion", "desc": "Complete {{goal}} tasks" },
+      "streak30": { "title": "Unstoppable", "desc": "Reach a {{goal}}-day streak" }
+    }
+  },
   "upgrade": {
     "title": "Home Health Plus",
     "subtitle": "Unlock your whole home.",

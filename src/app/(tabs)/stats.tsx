@@ -1,21 +1,27 @@
+import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ProgressBar } from '@/components/ProgressBar';
 import { WeekBars } from '@/components/WeekBars';
+import { computeAchievements } from '@/lib/achievements';
 import { homeHealth, last7Days, roomScore, scoreColor, streak, total } from '@/lib/health';
-import { useRooms, useTasks } from '@/lib/data';
+import { useMembers, useRooms, useTasks } from '@/lib/data';
 import { colors, fonts, radii, shadow } from '@/theme';
 
 export default function StatsScreen() {
   const { t } = useTranslation();
+  const router = useRouter();
   const insets = useSafeAreaInsets();
   const rooms = useRooms();
   const tasks = useTasks();
+  const members = useMembers();
 
   const score = homeHealth(tasks);
   const week = last7Days(tasks);
+  const achievements = computeAchievements(tasks, rooms, members);
+  const unlocked = achievements.filter((a) => a.unlocked).length;
 
   return (
     <ScrollView
@@ -38,6 +44,15 @@ export default function StatsScreen() {
           <Text style={styles.statLabel}>{t('stats.total')}</Text>
         </View>
       </View>
+
+      <Pressable style={styles.achievements} onPress={() => router.push('/achievements')}>
+        <Text style={styles.achEmoji}>🏆</Text>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.achTitle}>{t('achievements.title')}</Text>
+          <Text style={styles.achSub}>{t('achievements.count', { unlocked, total: achievements.length })}</Text>
+        </View>
+        <Text style={styles.achChevron}>›</Text>
+      </Pressable>
 
       <View style={styles.panel}>
         <Text style={styles.panelTitle}>{t('stats.last7')}</Text>
@@ -67,7 +82,24 @@ const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.bg },
   title: { fontFamily: fonts.serif, fontSize: 28, color: colors.text, marginBottom: 18 },
 
-  statRow: { flexDirection: 'row', gap: 10, marginBottom: 20 },
+  statRow: { flexDirection: 'row', gap: 10, marginBottom: 16 },
+
+  achievements: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
+    backgroundColor: colors.surface,
+    borderWidth: 1,
+    borderColor: colors.line,
+    borderRadius: radii.md,
+    padding: 16,
+    marginBottom: 16,
+    ...shadow.card,
+  },
+  achEmoji: { fontSize: 26 },
+  achTitle: { fontSize: 15, fontFamily: fonts.bold, color: colors.text },
+  achSub: { fontSize: 12, color: colors.muted, marginTop: 1 },
+  achChevron: { fontSize: 22, color: colors.muted4 },
   statCard: {
     flex: 1,
     backgroundColor: colors.surface,
