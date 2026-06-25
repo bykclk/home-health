@@ -141,7 +141,9 @@
     "benefitReminders": "Özel hatırlatma saatleri",
     "cta": "Premium'a geç",
     "note": "Abonelik fiyatlandırması yakında.",
-    "active": "Premium aktif"
+    "active": "Premium aktif",
+    "restore": "Satın alımları geri yükle",
+    "restoreNone": "Geri yüklenecek satın alım yok."
   },
   "detail": {
     "repeat": "Tekrar",

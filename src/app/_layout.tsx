@@ -20,6 +20,7 @@ import { Celebration } from '@/components/Celebration';
 import { AuthProvider, useAuth } from '@/lib/auth';
 import { USE_MOCK } from '@/lib/config';
 import { loadStoredLanguage } from '@/lib/i18n';
+import { identifyUser, initPurchases } from '@/lib/purchases';
 import { queryClient } from '@/lib/queryClient';
 import { useRealtimeSync } from '@/lib/realtime';
 import { fetchActiveHousehold } from '@/lib/remote';
@@ -73,6 +74,15 @@ function RootNavigator() {
   });
 
   useRealtimeSync(USE_MOCK ? undefined : householdQuery.data?.id);
+
+  // Configure RevenueCat once, then tie purchases to the signed-in user.
+  useEffect(() => {
+    initPurchases();
+  }, []);
+  useEffect(() => {
+    const uid = session?.user?.id;
+    if (uid) identifyUser(uid);
+  }, [session?.user?.id]);
 
   // Open the task when a reminder notification is tapped.
   useEffect(() => {

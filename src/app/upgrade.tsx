@@ -1,11 +1,13 @@
 import { useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
 
 import { setPremium, useIsPremium } from '@/lib/premium';
-import { colors, fonts, radii } from '@/theme';
+import { getPackages, purchase, PURCHASES_ENABLED, restore } from '@/lib/purchases';
+import { colors, fonts, radii, withAlpha } from '@/theme';
 
 const BENEFITS = [
   'upgrade.benefitRooms',
@@ -29,14 +31,48 @@ export default function UpgradeScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const isPremium = useIsPremium();
+  const [packages, setPackages] = useState<any[]>([]);
+  const [selected, setSelected] = useState(0);
+  const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    getPackages().then((p) => setPackages(p));
+  }, []);
 
   const safeBack = () => (router.canGoBack() ? router.back() : router.replace('/'));
 
-  // TODO: replace with a RevenueCat purchase in the monetization stage.
   const onUpgrade = async () => {
-    await setPremium(true);
-    safeBack();
+    // No keys (web / dev build without RevenueCat): unlock locally for testing.
+    if (!PURCHASES_ENABLED || !packages.length) {
+      await setPremium(true);
+      safeBack();
+      return;
+    }
+    try {
+      setBusy(true);
+      const ok = await purchase(packages[selected]);
+      if (ok) safeBack();
+    } catch (e: any) {
+      Alert.alert('Purchase failed', e?.message ?? 'Please try again.');
+    } finally {
+      setBusy(false);
+    }
   };
+
+  const onRestore = async () => {
+    try {
+      setBusy(true);
+      const ok = await restore();
+      if (ok) safeBack();
+      else Alert.alert(t('upgrade.restoreNone'));
+    } catch (e: any) {
+      Alert.alert('Restore failed', e?.message ?? 'Please try again.');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const price = packages[selected]?.product?.priceString;
 
   return (
     <View style={[styles.screen, { paddingTop: insets.top + 8 }]}>
@@ -63,6 +99,23 @@ export default function UpgradeScreen() {
             </View>
           ))}
         </View>
+
+        {!isPremium && packages.length > 1 && (
+          <View style={styles.plans}>
+            {packages.map((pkg, i) => {
+              const on = i === selected;
+              return (
+                <Pressable
+                  key={pkg.identifier}
+                  style={[styles.plan, on ? styles.planOn : styles.planOff]}
+                  onPress={() => setSelected(i)}>
+                  <Text style={styles.planPeriod}>{pkg.packageType}</Text>
+                  <Text style={styles.planPrice}>{pkg.product?.priceString}</Text>
+                </Pressable>
+              );
+            })}
+          </View>
+        )}
       </ScrollView>
 
       <View style={[styles.footer, { paddingBottom: insets.bottom + 16 }]}>
@@ -72,10 +125,20 @@ export default function UpgradeScreen() {
           </View>
         ) : (
           <>
-            <Pressable style={styles.cta} onPress={onUpgrade}>
-              <Text style={styles.ctaText}>{t('upgrade.cta')}</Text>
+            <Pressable style={styles.cta} onPress={onUpgrade} disabled={busy}>
+              {busy ? (
+                <ActivityIndicator color="#fff" />
+              ) : (
+                <Text style={styles.ctaText}>{price ? `${t('upgrade.cta')} · ${price}` : t('upgrade.cta')}</Text>
+              )}
             </Pressable>
-            <Text style={styles.note}>{t('upgrade.note')}</Text>
+            {PURCHASES_ENABLED ? (
+              <Pressable onPress={onRestore} disabled={busy} style={styles.restoreBtn}>
+                <Text style={styles.restore}>{t('upgrade.restore')}</Text>
+              </Pressable>
+            ) : (
+              <Text style={styles.note}>{t('upgrade.note')}</Text>
+            )}
           </>
         )}
       </View>
@@ -112,6 +175,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   benefitText: { flex: 1, fontSize: 16, fontFamily: fonts.semibold, color: colors.text },
+
+  plans: { alignSelf: 'stretch', flexDirection: 'row', gap: 10, marginTop: 26 },
+  plan: { flex: 1, borderRadius: radii.md, borderWidth: 1.5, padding: 14, alignItems: 'center' },
+  planOff: { borderColor: colors.line, backgroundColor: colors.surface },
+  planOn: { borderColor: colors.accent, backgroundColor: withAlpha(colors.accent, 0.1) },
+  planPeriod: { fontSize: 12, fontFamily: fonts.bold, color: colors.muted, textTransform: 'capitalize' },
+  planPrice: { fontSize: 18, fontFamily: fonts.bold, color: colors.text, marginTop: 4 },
+
+  restoreBtn: { paddingVertical: 12, alignItems: 'center', marginTop: 4 },
+  restore: { fontSize: 14, fontFamily: fonts.semibold, color: colors.muted2 },
 
   footer: { paddingHorizontal: 24, paddingTop: 12 },
   cta: { paddingVertical: 16, borderRadius: radii.md, backgroundColor: colors.accent, alignItems: 'center' },

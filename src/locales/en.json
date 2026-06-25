@@ -141,7 +141,9 @@
     "benefitReminders": "Custom reminder times",
     "cta": "Go Premium",
     "note": "Subscription pricing coming soon.",
-    "active": "Premium active"
+    "active": "Premium active",
+    "restore": "Restore purchases",
+    "restoreNone": "No purchases to restore."
   },
   "detail": {
     "repeat": "Repeat",

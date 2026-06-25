@@ -3,6 +3,7 @@ import { createContext, useContext, useEffect, useMemo, useState, type ReactNode
 import { Platform } from 'react-native';
 
 import { USE_MOCK } from '@/lib/config';
+import { logOutPurchases } from '@/lib/purchases';
 import { supabase } from '@/lib/supabase';
 
 interface AuthContextValue {
@@ -43,6 +44,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       signInWithApple,
       signInWithGoogle,
       signOut: async () => {
+        await logOutPurchases();
         if (!USE_MOCK) await supabase.auth.signOut();
       },
     }),
