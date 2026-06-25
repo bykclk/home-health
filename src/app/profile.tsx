@@ -5,7 +5,7 @@ import { Alert, Pressable, StyleSheet, Switch, Text, TextInput, View } from 'rea
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Avatar } from '@/components/Avatar';
-import { getMyProfile, updateProfile, useRooms, useTasks } from '@/lib/data';
+import { deleteAccount, getMyProfile, updateProfile, useRooms, useTasks } from '@/lib/data';
 import { areRemindersEnabled, setRemindersEnabled, syncReminders } from '@/lib/notifications';
 import { setPremium, useIsPremium } from '@/lib/premium';
 import { avatarColors, colors, fonts, radii } from '@/theme';
@@ -38,6 +38,23 @@ export default function ProfileScreen() {
     if (result) syncReminders(tasks, rooms, t('notifications.dueBody'));
     else if (value) Alert.alert(t('profile.remindersDenied'));
   };
+
+  const confirmDelete = () =>
+    Alert.alert(t('profile.deleteTitle'), t('profile.deleteWarning'), [
+      { text: t('common.cancel'), style: 'cancel' },
+      {
+        text: t('profile.deleteConfirm'),
+        style: 'destructive',
+        onPress: async () => {
+          try {
+            await deleteAccount();
+            safeBack();
+          } catch (e: any) {
+            Alert.alert('Something went wrong', e?.message ?? 'Please try again.');
+          }
+        },
+      },
+    ]);
 
   const safeBack = () => (router.canGoBack() ? router.back() : router.replace('/'));
   const initial = (name.trim()[0] || '?').toUpperCase();
@@ -118,6 +135,10 @@ export default function ProfileScreen() {
             />
           </View>
         )}
+
+        <Pressable style={styles.deleteAccount} onPress={confirmDelete}>
+          <Text style={styles.deleteAccountText}>{t('profile.deleteAccount')}</Text>
+        </Pressable>
       </View>
     </View>
   );
@@ -158,4 +179,7 @@ const styles = StyleSheet.create({
   reminderText: { flex: 1 },
   reminderTitle: { fontSize: 16, fontFamily: fonts.semibold, color: colors.text },
   reminderHint: { fontSize: 12, color: colors.muted, marginTop: 2, lineHeight: 16 },
+
+  deleteAccount: { marginTop: 40, paddingVertical: 12, alignItems: 'center' },
+  deleteAccountText: { fontSize: 14, fontFamily: fonts.semibold, color: colors.danger },
 });

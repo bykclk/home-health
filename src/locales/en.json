@@ -82,7 +82,11 @@
     "color": "Avatar color",
     "reminders": "Reminders",
     "remindersHint": "Get a morning reminder when a task comes due.",
-    "remindersDenied": "Enable notifications in Settings to get reminders."
+    "remindersDenied": "Enable notifications in Settings to get reminders.",
+    "deleteAccount": "Delete account",
+    "deleteTitle": "Delete account?",
+    "deleteWarning": "This permanently deletes your account and personal data. This can't be undone.",
+    "deleteConfirm": "Delete"
   },
   "notifications": {
     "dueBody": "This task is due"

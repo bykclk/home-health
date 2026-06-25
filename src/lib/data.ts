@@ -35,6 +35,7 @@ export const joinHousehold = impl.joinHousehold;
 export const renameHousehold = impl.renameHousehold;
 export const removeMember = impl.removeMember;
 export const leaveHousehold = impl.leaveHousehold;
+export const deleteAccount = impl.deleteAccount;
 
 // Profile
 export const getMyProfile = impl.getMyProfile;

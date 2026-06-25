@@ -171,6 +171,10 @@ export async function leaveHousehold(): Promise<void> {
   // No-op in mock mode (there is no auth gate to fall back to).
 }
 
+export async function deleteAccount(): Promise<void> {
+  // No-op in mock mode (no real account to delete).
+}
+
 // In mock mode the first seed member stands in for the current user.
 export async function getMyProfile(): Promise<Profile | null> {
   const me = state.members[0];

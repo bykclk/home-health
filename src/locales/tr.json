@@ -82,7 +82,11 @@
     "color": "Avatar rengi",
     "reminders": "Hatırlatmalar",
     "remindersHint": "Bir görevin zamanı geldiğinde sabah hatırlatma al.",
-    "remindersDenied": "Hatırlatma almak için Ayarlar'dan bildirimlere izin ver."
+    "remindersDenied": "Hatırlatma almak için Ayarlar'dan bildirimlere izin ver.",
+    "deleteAccount": "Hesabı sil",
+    "deleteTitle": "Hesap silinsin mi?",
+    "deleteWarning": "Bu, hesabını ve kişisel verilerini kalıcı olarak siler. Geri alınamaz.",
+    "deleteConfirm": "Sil"
   },
   "notifications": {
     "dueBody": "Bu görev yapılmalı"

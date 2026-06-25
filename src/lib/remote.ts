@@ -327,6 +327,13 @@ export async function removeMember(userId: string): Promise<void> {
   queryClient.invalidateQueries({ queryKey: ['members'] });
 }
 
+export async function deleteAccount(): Promise<void> {
+  const { error } = await supabase.rpc('delete_account');
+  if (error) throw error;
+  await supabase.auth.signOut();
+  queryClient.clear();
+}
+
 export async function leaveHousehold(): Promise<void> {
   const householdId = currentHouseholdId();
   const userId = await currentUserId();
