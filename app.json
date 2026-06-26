@@ -42,13 +42,31 @@
       ],
       "expo-localization",
       "expo-apple-authentication",
-      ["@react-native-google-signin/google-signin", { "iosUrlScheme": "com.googleusercontent.apps.867735633533-299rmc2lgl2u9o62b2a8aieq1mqg367e" }],
-      ["expo-notifications", { "icon": "./assets/images/android-icon-monochrome.png", "color": "#4a754c" }],
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.867735633533-299rmc2lgl2u9o62b2a8aieq1mqg367e"
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/android-icon-monochrome.png",
+          "color": "#4a754c"
+        }
+      ],
       "./plugins/withModularHeaders"
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "066cf2e5-1dc1-41cb-a6d3-1b2fe446784b"
+      }
+    },
+    "owner": "omerb06"
   }
 }
