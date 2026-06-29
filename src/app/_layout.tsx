@@ -76,12 +76,13 @@ function RootNavigator() {
   useRealtimeSync(USE_MOCK ? undefined : householdQuery.data?.id);
 
   // Configure RevenueCat once, then tie purchases to the signed-in user.
+  // Skipped in mock mode (demo/screenshots) — there is no real store there.
   useEffect(() => {
-    initPurchases();
+    if (!USE_MOCK) initPurchases();
   }, []);
   useEffect(() => {
     const uid = session?.user?.id;
-    if (uid) identifyUser(uid);
+    if (!USE_MOCK && uid) identifyUser(uid);
   }, [session?.user?.id]);
 
   // Open the task when a reminder notification is tapped.

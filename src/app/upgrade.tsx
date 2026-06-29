@@ -40,6 +40,7 @@ export default function UpgradeScreen() {
     if (!PURCHASES_ENABLED) return;
     getPackages()
       .then((p) => setPackages(p))
+      .catch(() => {})
       .finally(() => setLoadingPkgs(false));
   }, []);
 
