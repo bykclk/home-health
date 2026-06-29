@@ -143,7 +143,8 @@
     "note": "Subscription pricing coming soon.",
     "active": "Premium active",
     "restore": "Restore purchases",
-    "restoreNone": "No purchases to restore."
+    "restoreNone": "No purchases to restore.",
+    "unavailable": "Subscriptions aren't available right now. Please try again later."
   },
   "detail": {
     "repeat": "Repeat",

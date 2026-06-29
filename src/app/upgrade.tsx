@@ -32,20 +32,30 @@ export default function UpgradeScreen() {
   const insets = useSafeAreaInsets();
   const isPremium = useIsPremium();
   const [packages, setPackages] = useState<any[]>([]);
+  const [loadingPkgs, setLoadingPkgs] = useState(PURCHASES_ENABLED);
   const [selected, setSelected] = useState(0);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    getPackages().then((p) => setPackages(p));
+    if (!PURCHASES_ENABLED) return;
+    getPackages()
+      .then((p) => setPackages(p))
+      .finally(() => setLoadingPkgs(false));
   }, []);
 
   const safeBack = () => (router.canGoBack() ? router.back() : router.replace('/'));
 
   const onUpgrade = async () => {
-    // No keys (web / dev build without RevenueCat): unlock locally for testing.
-    if (!PURCHASES_ENABLED || !packages.length) {
+    // Web or a dev build without RevenueCat keys: unlock locally for testing only.
+    // In a real build we must NEVER grant premium without an actual purchase.
+    if (!PURCHASES_ENABLED) {
       await setPremium(true);
       safeBack();
+      return;
+    }
+    if (loadingPkgs) return; // products still loading; ignore the tap
+    if (!packages.length) {
+      Alert.alert(t('upgrade.unavailable'));
       return;
     }
     try {
@@ -125,8 +135,8 @@ export default function UpgradeScreen() {
           </View>
         ) : (
           <>
-            <Pressable style={styles.cta} onPress={onUpgrade} disabled={busy}>
-              {busy ? (
+            <Pressable style={styles.cta} onPress={onUpgrade} disabled={busy || loadingPkgs}>
+              {busy || loadingPkgs ? (
                 <ActivityIndicator color="#fff" />
               ) : (
                 <Text style={styles.ctaText}>{price ? `${t('upgrade.cta')} · ${price}` : t('upgrade.cta')}</Text>

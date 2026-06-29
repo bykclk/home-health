@@ -143,7 +143,8 @@
     "note": "Abonelik fiyatlandırması yakında.",
     "active": "Premium aktif",
     "restore": "Satın alımları geri yükle",
-    "restoreNone": "Geri yüklenecek satın alım yok."
+    "restoreNone": "Geri yüklenecek satın alım yok.",
+    "unavailable": "Abonelikler şu an kullanılamıyor. Lütfen daha sonra tekrar deneyin."
   },
   "detail": {
     "repeat": "Tekrar",
